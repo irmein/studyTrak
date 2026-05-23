@@ -1,0 +1,2644 @@
+<!-- School Planner -->
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700;9..144,800&family=Manrope:wght@300;400;500;600;700;800&display=swap');
+
+  :root {
+    --paper: #F4EDDD;
+    --paper-2: #EBE2CC;
+    --ink: #1F1B2E;
+    --ink-soft: #4A4458;
+    --ink-faint: #8A8298;
+    --accent: #D94F2D;
+    --accent-soft: #F2A488;
+    --teal: #1F5F5B;
+    --gold: #C8923A;
+    --rule: #C9BFA8;
+    --rule-soft: #DCD2B8;
+    --c1: #D94F2D; --c2: #1F5F5B; --c3: #C8923A; --c4: #6B3FA0;
+    --c5: #2E7A5F; --c6: #B83B5E; --c7: #3A5A8A; --c8: #8A5A2B;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Manrope', sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    min-height: 100vh;
+    background-image:
+      radial-gradient(circle at 1px 1px, rgba(31,27,46,0.04) 1px, transparent 0);
+    background-size: 24px 24px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .app {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 32px 24px 80px;
+  }
+
+  /* ===== HEADER ===== */
+  header.brand {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    border-bottom: 2px solid var(--ink);
+    padding-bottom: 16px;
+    margin-bottom: 8px;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  .logo {
+    font-family: 'Fraunces', serif;
+    font-weight: 800;
+    font-size: 38px;
+    letter-spacing: -1.5px;
+    line-height: 1;
+  }
+  .logo em {
+    font-style: italic;
+    font-weight: 500;
+    color: var(--accent);
+  }
+  .tagline {
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    font-weight: 600;
+  }
+  .datestamp {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 15px;
+    color: var(--ink-soft);
+  }
+  .double-rule {
+    height: 4px;
+    border-top: 1px solid var(--ink);
+    border-bottom: 1px solid var(--ink);
+    margin-bottom: 28px;
+  }
+
+  /* ===== TABS ===== */
+  nav.tabs {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 32px;
+    border-bottom: 1px solid var(--rule);
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  nav.tabs::-webkit-scrollbar { display: none; }
+  .tab {
+    padding: 12px 20px;
+    background: none;
+    border: none;
+    font-family: 'Manrope', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--ink-faint);
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -1px;
+    white-space: nowrap;
+    transition: color .15s, border-color .15s;
+    letter-spacing: 0.3px;
+  }
+  .tab:hover { color: var(--ink); }
+  .tab.active {
+    color: var(--ink);
+    border-bottom-color: var(--accent);
+  }
+  .tab .num {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-weight: 500;
+    color: var(--accent);
+    margin-right: 6px;
+    font-size: 13px;
+  }
+
+  /* ===== PANELS ===== */
+  .panel { display: none; animation: fadeIn .3s ease; }
+  .panel.active { display: block; }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(4px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .panel-title {
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: 32px;
+    letter-spacing: -1px;
+    margin-bottom: 4px;
+  }
+  .panel-title em {
+    font-style: italic;
+    font-weight: 400;
+    color: var(--accent);
+  }
+  .panel-sub {
+    color: var(--ink-soft);
+    margin-bottom: 24px;
+    font-size: 15px;
+  }
+
+  /* ===== CARDS ===== */
+  .card {
+    background: #FBF6E9;
+    border: 1px solid var(--rule);
+    border-radius: 6px;
+    padding: 20px;
+    margin-bottom: 16px;
+    box-shadow: 0 1px 0 rgba(31,27,46,0.04);
+  }
+  .card-h {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 18px;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .card-h .marker {
+    width: 6px; height: 22px;
+    background: var(--accent);
+    border-radius: 2px;
+  }
+
+  /* ===== FORMS ===== */
+  .form-row {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+  }
+  .form-row > * { flex: 1; min-width: 140px; }
+  label {
+    display: block;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    font-weight: 700;
+    color: var(--ink-soft);
+    margin-bottom: 6px;
+  }
+  input[type="text"], input[type="date"], input[type="time"], textarea, select {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    font-family: 'Manrope', sans-serif;
+    font-size: 14px;
+    background: #FFFCF3;
+    color: var(--ink);
+    transition: border-color .15s, box-shadow .15s;
+  }
+  input:focus, textarea:focus, select:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(217,79,45,0.12);
+  }
+  textarea { resize: vertical; min-height: 70px; font-family: inherit; }
+
+  /* ===== BUTTONS ===== */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 18px;
+    background: var(--ink);
+    color: var(--paper);
+    border: none;
+    border-radius: 4px;
+    font-family: 'Manrope', sans-serif;
+    font-weight: 600;
+    font-size: 13px;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    transition: transform .1s, background .15s;
+  }
+  .btn:hover { background: var(--accent); }
+  .btn:active { transform: translateY(1px); }
+  .btn.secondary {
+    background: transparent;
+    color: var(--ink);
+    border: 1.5px solid var(--ink);
+  }
+  .btn.secondary:hover { background: var(--ink); color: var(--paper); }
+  .btn.accent { background: var(--accent); }
+  .btn.accent:hover { background: var(--ink); }
+  .btn.small { padding: 6px 12px; font-size: 12px; }
+  .btn.ghost {
+    background: none;
+    color: var(--ink-soft);
+    padding: 4px 8px;
+    font-size: 12px;
+  }
+  .btn.ghost:hover { background: rgba(31,27,46,0.06); color: var(--ink); }
+
+  /* ===== SUBJECT CHIPS ===== */
+  .subject-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+  .subject-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 14px;
+    background: #FFFCF3;
+    border: 1px solid var(--rule);
+    border-radius: 30px;
+    font-size: 13px;
+    font-weight: 600;
+  }
+  .swatch {
+    width: 12px; height: 12px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .subject-chip .x {
+    cursor: pointer;
+    color: var(--ink-faint);
+    font-size: 16px;
+    line-height: 1;
+    padding: 0 2px;
+  }
+  .subject-chip .x:hover { color: var(--accent); }
+
+  /* ===== SCHEDULE GRID ===== */
+  .schedule-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 10px;
+    margin-top: 8px;
+  }
+  .day-col {
+    background: #FFFCF3;
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    padding: 12px;
+    min-height: 200px;
+  }
+  .day-head {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 14px;
+    padding-bottom: 8px;
+    margin-bottom: 10px;
+    border-bottom: 1px dashed var(--rule);
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .class-item {
+    background: var(--paper-2);
+    border-left: 3px solid var(--c1);
+    padding: 6px 8px;
+    margin-bottom: 6px;
+    border-radius: 3px;
+    font-size: 12px;
+    line-height: 1.35;
+    position: relative;
+  }
+  .class-item .time { color: var(--ink-soft); font-size: 11px; font-weight: 600; }
+  .class-item .name { font-weight: 700; font-size: 13px; }
+  .class-item .room { color: var(--ink-faint); font-size: 11px; font-style: italic; }
+  .class-item .del {
+    position: absolute;
+    top: 2px; right: 4px;
+    cursor: pointer;
+    color: var(--ink-faint);
+    font-size: 14px;
+    line-height: 1;
+  }
+  .class-item .del:hover { color: var(--accent); }
+
+  /* ===== HOMEWORK ===== */
+  .hw-list { display: flex; flex-direction: column; gap: 10px; }
+  .hw-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    background: #FFFCF3;
+    border: 1px solid var(--rule);
+    border-left: 4px solid var(--c1);
+    padding: 14px 16px;
+    border-radius: 4px;
+    transition: opacity .2s;
+  }
+  .hw-item.done { opacity: 0.55; }
+  .hw-item.done .hw-title { text-decoration: line-through; }
+  .hw-check {
+    width: 20px; height: 20px;
+    border: 2px solid var(--ink);
+    border-radius: 4px;
+    cursor: pointer;
+    flex-shrink: 0;
+    margin-top: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #FFFCF3;
+  }
+  .hw-check.checked {
+    background: var(--ink);
+  }
+  .hw-check.checked::after {
+    content: '✓';
+    color: var(--paper);
+    font-size: 14px;
+    font-weight: 700;
+  }
+  .hw-body { flex: 1; min-width: 0; }
+  .hw-title {
+    font-weight: 700;
+    font-size: 15px;
+    margin-bottom: 4px;
+  }
+  .hw-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    font-size: 12px;
+    color: var(--ink-soft);
+  }
+  .hw-meta span { display: inline-flex; align-items: center; gap: 4px; }
+  .hw-desc {
+    font-size: 13px;
+    color: var(--ink-soft);
+    margin-top: 6px;
+    line-height: 1.5;
+  }
+  .priority-tag {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 700;
+  }
+  .priority-high { background: #F8D7CE; color: #8B2010; }
+  .priority-med { background: #F2E3C3; color: #6B4A10; }
+  .priority-low { background: #D9E5DC; color: #1F4A30; }
+
+  .hw-actions {
+    display: flex;
+    gap: 4px;
+    flex-shrink: 0;
+  }
+
+  .empty {
+    text-align: center;
+    color: var(--ink-faint);
+    font-style: italic;
+    padding: 24px 12px;
+    font-family: 'Fraunces', serif;
+    font-size: 15px;
+  }
+
+  /* ===== STORAGE STATUS ===== */
+  .bucket-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 10px;
+  }
+  .bucket-tile {
+    border: 1.5px solid var(--rule);
+    border-radius: 6px;
+    padding: 12px 14px;
+    background: #FFFCF3;
+    transition: border-color .3s;
+  }
+  .bucket-icon {
+    font-size: 18px;
+    line-height: 1;
+    display: block;
+    margin-bottom: 6px;
+    transition: color .3s;
+  }
+  .bucket-name {
+    font-weight: 700;
+    font-size: 13px;
+    margin-bottom: 3px;
+  }
+  .bucket-meta {
+    font-size: 11px;
+    color: var(--ink-faint);
+    font-style: italic;
+  }
+
+  /* ===== DATE NAV ROW ===== */
+  .date-picker-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    background: #FBF6E9;
+    border: 1px solid var(--rule);
+    border-radius: 6px;
+    padding: 12px 16px;
+    margin-bottom: 24px;
+  }
+
+  /* ===== TODAY ===== */
+  .today-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 20px;
+  }
+  @media (max-width: 760px) {
+    .today-grid { grid-template-columns: 1fr; }
+  }
+  .quick-stat {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+  .stat {
+    flex: 1;
+    min-width: 100px;
+    background: var(--ink);
+    color: var(--paper);
+    padding: 14px 16px;
+    border-radius: 4px;
+    position: relative;
+    overflow: hidden;
+  }
+  .stat.accent { background: var(--accent); }
+  .stat.teal { background: var(--teal); }
+  .stat-num {
+    font-family: 'Fraunces', serif;
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 1;
+  }
+  .stat-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-top: 4px;
+    opacity: 0.85;
+  }
+
+  /* ===== MONTH/SEMESTER ===== */
+  .month-block {
+    background: #FBF6E9;
+    border: 1px solid var(--rule);
+    border-radius: 6px;
+    margin-bottom: 16px;
+    overflow: hidden;
+  }
+  .month-head {
+    padding: 16px 20px;
+    background: var(--ink);
+    color: var(--paper);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .month-name {
+    font-family: 'Fraunces', serif;
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: -0.5px;
+  }
+  .month-name em { font-style: italic; color: var(--accent-soft); margin-left: 8px; font-weight: 400; font-size: 15px; }
+  .month-body { padding: 16px 20px; }
+  .topic-row {
+    display: flex;
+    gap: 14px;
+    padding: 10px 0;
+    border-bottom: 1px dashed var(--rule);
+  }
+  .topic-row:last-child { border-bottom: none; }
+  .topic-subj {
+    flex: 0 0 130px;
+    font-weight: 700;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .topic-text {
+    flex: 1;
+    font-size: 14px;
+    color: var(--ink-soft);
+  }
+  .topic-row .del {
+    cursor: pointer;
+    color: var(--ink-faint);
+    font-size: 14px;
+  }
+  .topic-row .del:hover { color: var(--accent); }
+
+  /* ===== UPLOAD AREA ===== */
+  .upload-help {
+    background: #FFFCF3;
+    border: 1.5px dashed var(--rule);
+    border-radius: 6px;
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+  .upload-help-title {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 16px;
+    margin-bottom: 6px;
+  }
+  .upload-help p {
+    font-size: 13px;
+    color: var(--ink-soft);
+    margin-bottom: 10px;
+  }
+  .upload-help code {
+    background: var(--paper-2);
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-size: 12px;
+    font-family: 'Courier New', monospace;
+  }
+
+  /* ===== STUDY HELPER ===== */
+  .study-output {
+    background: #FFFCF3;
+    border: 1px solid var(--rule);
+    border-radius: 6px;
+    padding: 20px;
+    margin-top: 16px;
+    font-size: 14px;
+    line-height: 1.7;
+    white-space: pre-wrap;
+  }
+  .study-output h3 {
+    font-family: 'Fraunces', serif;
+    font-size: 18px;
+    margin: 16px 0 8px;
+    color: var(--accent);
+  }
+  .study-output h3:first-child { margin-top: 0; }
+  .study-output ul { padding-left: 20px; margin: 6px 0; }
+  .study-output li { margin-bottom: 4px; }
+
+  /* ===== WEEK VIEW ===== */
+  .week-day-block {
+    background: #FBF6E9;
+    border: 1px solid var(--rule);
+    border-radius: 6px;
+    padding: 16px;
+    margin-bottom: 12px;
+  }
+  .week-day-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--rule);
+  }
+  .week-day-name {
+    font-family: 'Fraunces', serif;
+    font-size: 20px;
+    font-weight: 600;
+  }
+  .week-day-date {
+    font-size: 12px;
+    color: var(--ink-faint);
+    font-style: italic;
+  }
+  .week-day-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 16px;
+  }
+  @media (max-width: 600px) {
+    .week-day-content { grid-template-columns: 1fr; }
+  }
+  .review-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 0;
+    border-bottom: 1px dashed var(--rule-soft);
+    font-size: 13px;
+  }
+  .review-item:last-child { border-bottom: none; }
+  .review-item.done span { text-decoration: line-through; color: var(--ink-faint); }
+  .sub-head {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    font-weight: 700;
+    color: var(--ink-soft);
+    margin-bottom: 8px;
+  }
+
+  .mini-list {
+    list-style: none;
+    font-size: 13px;
+  }
+  .mini-list li {
+    padding: 4px 0;
+    border-bottom: 1px dashed var(--rule-soft);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .mini-list li:last-child { border-bottom: none; }
+
+  /* ===== MODAL ===== */
+  .modal-bg {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(31,27,46,0.5);
+    z-index: 100;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  .modal-bg.show { display: flex; }
+  .modal {
+    background: var(--paper);
+    border-radius: 8px;
+    padding: 24px;
+    max-width: 480px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+  }
+  .modal-h {
+    font-family: 'Fraunces', serif;
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 16px;
+  }
+
+  /* ===== FILTERS ===== */
+  .filter-row {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+  }
+  .filter-chip {
+    padding: 6px 12px;
+    border: 1px solid var(--rule);
+    border-radius: 20px;
+    background: #FFFCF3;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--ink-soft);
+    transition: all .15s;
+  }
+  .filter-chip:hover { border-color: var(--ink-soft); }
+  .filter-chip.active {
+    background: var(--ink);
+    color: var(--paper);
+    border-color: var(--ink);
+  }
+
+  /* ===== TOAST ===== */
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(80px);
+    background: var(--ink);
+    color: var(--paper);
+    padding: 12px 20px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    z-index: 200;
+    transition: transform .3s;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+
+  /* ===== LOADING ===== */
+  .loading {
+    text-align: center;
+    padding: 40px;
+    color: var(--ink-faint);
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+  }
+
+  @media (max-width: 900px) {
+    .schedule-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+  @media (max-width: 700px) {
+    .schedule-grid { grid-template-columns: 1fr; }
+    .logo { font-size: 28px; }
+    .panel-title { font-size: 24px; }
+  }
+</style>
+
+<div class="app">
+  <header class="brand">
+    <div>
+      <div class="logo">The Study<em> Ledger</em></div>
+      <div class="tagline">A planner for the curious</div>
+    </div>
+    <div class="datestamp" id="dateStamp"></div>
+  </header>
+  <div class="double-rule"></div>
+
+  <nav class="tabs">
+    <button class="tab active" data-tab="today"><span class="num">i.</span>Today</button>
+    <button class="tab" data-tab="week"><span class="num">ii.</span>This Week</button>
+    <button class="tab" data-tab="month"><span class="num">iii.</span>Month & Semester</button>
+    <button class="tab" data-tab="homework"><span class="num">iv.</span>Homework</button>
+    <button class="tab" data-tab="helper"><span class="num">v.</span>Study Helper</button>
+    <button class="tab" data-tab="setup"><span class="num">vi.</span>Setup</button>
+  </nav>
+
+  <!-- ===== TODAY ===== -->
+  <section class="panel active" id="panel-today">
+    <div class="panel-title" id="todayTitle">Today<em> at a glance</em></div>
+    <div class="panel-sub" id="todayDate"></div>
+
+    <div class="date-picker-row">
+      <button class="btn small ghost" onclick="shiftDay(-1)">← Prev</button>
+      <button class="btn small secondary" onclick="jumpToToday()">Today</button>
+      <button class="btn small ghost" onclick="shiftDay(1)">Next →</button>
+      <span id="dayNavLabel" style="margin-left:auto;font-family:'Fraunces',serif;font-style:italic;color:var(--ink-soft);font-size:14px"></span>
+    </div>
+
+    <div class="quick-stat">
+      <div class="stat accent">
+        <div class="stat-num" id="statClasses">0</div>
+        <div class="stat-label" id="statClassesLabel">Classes today</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num" id="statHwToday">0</div>
+        <div class="stat-label" id="statHwTodayLabel">Due today</div>
+      </div>
+      <div class="stat teal">
+        <div class="stat-num" id="statHwTomorrow">0</div>
+        <div class="stat-label" id="statHwTomorrowLabel">Due next day</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num" id="statHwOpen">0</div>
+        <div class="stat-label">Open total</div>
+      </div>
+    </div>
+
+    <div class="today-grid">
+      <div class="card">
+        <div class="card-h"><span class="marker"></span><span id="todayClassesHeading">Today's Classes</span></div>
+        <div id="todayClasses"></div>
+      </div>
+      <div class="card">
+        <div class="card-h"><span class="marker"></span>Homework Due Soon</div>
+        <div id="todayHomework"></div>
+        <button class="btn small accent" style="margin-top:12px" onclick="openHwModal()">+ Add homework</button>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:20px">
+      <div class="card-h"><span class="marker"></span><span id="todayReviewsHeading">Review Tasks</span></div>
+      <div id="todayReviews"></div>
+      <div style="display:flex;gap:8px;margin-top:12px;align-items:flex-end;flex-wrap:wrap">
+        <div style="flex:2;min-width:180px">
+          <label>Task</label>
+          <input type="text" id="reviewText" placeholder="e.g. Review Chapter 3 notes, flashcards…" />
+        </div>
+        <div style="flex:1;min-width:130px">
+          <label>Subject (optional)</label>
+          <select id="reviewSubject"></select>
+        </div>
+        <button class="btn accent" onclick="addReviewTask()">Add</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== WEEK ===== -->
+  <section class="panel" id="panel-week">
+    <div class="panel-title" id="weekTitle">This week's<em> rhythm</em></div>
+    <div class="panel-sub" id="weekSub">Classes scheduled and what's due each day.</div>
+
+    <div class="date-picker-row">
+      <button class="btn small ghost" onclick="shiftWeek(-1)">← Prev week</button>
+      <button class="btn small secondary" onclick="jumpToThisWeek()">This week</button>
+      <button class="btn small ghost" onclick="shiftWeek(1)">Next week →</button>
+      <span id="weekRange" style="margin-left:auto;font-family:'Fraunces',serif;font-style:italic;color:var(--ink-soft);font-size:14px"></span>
+    </div>
+
+    <div id="weekContent"></div>
+  </section>
+
+  <!-- ===== MONTH ===== -->
+  <section class="panel" id="panel-month">
+    <div class="panel-title">The semester<em> roadmap</em></div>
+    <div class="panel-sub">What you'll learn each month, subject by subject.</div>
+
+    <div class="card">
+      <div class="card-h"><span class="marker"></span>Add a topic to the roadmap</div>
+      <div class="form-row">
+        <div>
+          <label>Month</label>
+          <select id="topicMonth"></select>
+        </div>
+        <div>
+          <label>Subject</label>
+          <select id="topicSubject"></select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div style="flex: 3">
+          <label>Topic or unit</label>
+          <input type="text" id="topicText" placeholder="e.g. Fractions and decimals, Cell biology, The American Revolution" />
+        </div>
+        <div style="flex: 0 0 auto; display: flex; align-items: flex-end;">
+          <button class="btn accent" onclick="addTopic()">Add</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="monthList"></div>
+  </section>
+
+  <!-- ===== HOMEWORK ===== -->
+  <section class="panel" id="panel-homework">
+    <div class="panel-title">Homework<em> &amp; assignments</em></div>
+    <div class="panel-sub">Track everything you need to finish.</div>
+
+    <button class="btn accent" onclick="openHwModal()" style="margin-bottom:20px">+ New assignment</button>
+
+    <div class="filter-row" id="hwFilters">
+      <div class="filter-chip active" data-filter="all">All</div>
+      <div class="filter-chip" data-filter="open">Open</div>
+      <div class="filter-chip" data-filter="done">Done</div>
+      <div class="filter-chip" data-filter="overdue">Overdue</div>
+      <div class="filter-chip" data-filter="week">This week</div>
+    </div>
+
+    <div class="hw-list" id="hwList"></div>
+
+    <div style="margin-top:36px;padding-top:24px;border-top:2px dashed var(--rule)">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:12px">
+        <div class="panel-title" style="font-size:22px;margin-bottom:0">Review<em> Tasks</em></div>
+        <button class="btn accent small" onclick="openReviewModal()">+ New review task</button>
+      </div>
+      <div class="filter-row" id="reviewFilters">
+        <div class="filter-chip active" data-rfilter="all">All</div>
+        <div class="filter-chip" data-rfilter="upcoming">Upcoming</div>
+        <div class="filter-chip" data-rfilter="today">Today</div>
+        <div class="filter-chip" data-rfilter="past">Past</div>
+        <div class="filter-chip" data-rfilter="open">Open</div>
+        <div class="filter-chip" data-rfilter="done">Done</div>
+      </div>
+      <div id="allReviewsList"></div>
+    </div>
+  </section>
+
+  <!-- ===== STUDY HELPER ===== -->
+  <section class="panel" id="panel-helper">
+    <div class="panel-title">The study<em> helper</em></div>
+    <div class="panel-sub">Generate a plan, a study guide, or break a big assignment into steps.</div>
+
+    <div class="card">
+      <div class="card-h"><span class="marker"></span>What do you need help with?</div>
+      <div class="form-row">
+        <div>
+          <label>Type of help</label>
+          <select id="helperType" onchange="toggleHelperDate()">
+            <option value="daily">Daily homework plan</option>
+            <option value="weekly">Weekly study schedule</option>
+            <option value="test">Test prep checklist</option>
+            <option value="project">Break down a big project</option>
+            <option value="reading">Reading guide</option>
+          </select>
+        </div>
+        <div>
+          <label>Subject (optional)</label>
+          <select id="helperSubject"><option value="">— Any —</option></select>
+        </div>
+        <div id="helperDateWrap">
+          <label>Plan for date</label>
+          <input type="date" id="helperDate" />
+        </div>
+      </div>
+      <div class="form-row">
+        <div style="flex: 3">
+          <label>Details (topic, test date, project description, etc.)</label>
+          <input type="text" id="helperDetails" placeholder="e.g. Math test on fractions Friday, or 5-page essay on Romeo & Juliet" />
+        </div>
+        <div style="flex: 0 0 auto; display: flex; align-items: flex-end;">
+          <button class="btn accent" onclick="generateHelper()">Generate</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="helperOutput"></div>
+  </section>
+
+  <!-- ===== SETUP ===== -->
+  <section class="panel" id="panel-setup">
+    <div class="panel-title">Setup<em> your year</em></div>
+    <div class="panel-sub">Add your subjects, schedule, and semester dates. Saved automatically.</div>
+
+    <!-- Student info -->
+    <div class="card">
+      <div class="card-h"><span class="marker"></span>Basics</div>
+      <div class="form-row">
+        <div>
+          <label>Your name</label>
+          <input type="text" id="studentName" placeholder="Your name" />
+        </div>
+        <div>
+          <label>Grade</label>
+          <select id="studentGrade">
+            <option value="6">Grade 6</option>
+            <option value="7">Grade 7</option>
+            <option value="8">Grade 8</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div>
+          <label>Semester starts</label>
+          <input type="date" id="semStart" />
+        </div>
+        <div>
+          <label>Semester ends</label>
+          <input type="date" id="semEnd" />
+        </div>
+      </div>
+      <button class="btn" onclick="saveBasics()">Save basics</button>
+    </div>
+
+    <!-- Subjects -->
+    <div class="card">
+      <div class="card-h"><span class="marker"></span>Subjects</div>
+      <div class="subject-list" id="subjectList"></div>
+      <div class="form-row">
+        <div style="flex: 2">
+          <label>Subject name</label>
+          <input type="text" id="newSubjName" placeholder="e.g. Math, English, Science" />
+        </div>
+        <div>
+          <label>Teacher (optional)</label>
+          <input type="text" id="newSubjTeacher" placeholder="Ms. Smith" />
+        </div>
+        <div style="flex: 0 0 auto; display: flex; align-items: flex-end;">
+          <button class="btn accent" onclick="addSubject()">Add subject</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Upload helper -->
+    <div class="card">
+      <div class="card-h"><span class="marker"></span>Paste a timetable (optional)</div>
+      <div class="upload-help">
+        <div class="upload-help-title">Got your timetable in text form?</div>
+        <p>Paste your weekly schedule below — one line per class. I'll try to read it. Use the format:</p>
+        <p><code>Day Time Subject (Room)</code></p>
+        <p style="margin-top:8px;font-size:12px">Example: <code>Mon 9:00 Math (Rm 12)</code> &nbsp;·&nbsp; <code>Tue 10:30 Science</code></p>
+      </div>
+      <textarea id="bulkSchedule" placeholder="Mon 8:30 English (Rm 14)
+Mon 9:30 Math (Rm 12)
+Tue 8:30 Science (Rm 7)
+..." style="min-height:120px"></textarea>
+      <button class="btn" style="margin-top:10px" onclick="parseBulk()">Parse and add to schedule</button>
+    </div>
+
+    <!-- Weekly schedule -->
+    <div class="card">
+      <div class="card-h"><span class="marker"></span>Weekly schedule</div>
+      <p style="color:var(--ink-soft);font-size:13px;margin-bottom:14px">Add classes one by one, or use the paste box above.</p>
+      <div class="form-row">
+        <div>
+          <label>Day</label>
+          <select id="classDay">
+            <option value="mon">Monday</option>
+            <option value="tue">Tuesday</option>
+            <option value="wed">Wednesday</option>
+            <option value="thu">Thursday</option>
+            <option value="fri">Friday</option>
+            <option value="sat">Saturday</option>
+          </select>
+        </div>
+        <div>
+          <label>Time</label>
+          <input type="time" id="classTime" />
+        </div>
+        <div>
+          <label>Subject</label>
+          <select id="classSubject"></select>
+        </div>
+        <div>
+          <label>Room (optional)</label>
+          <input type="text" id="classRoom" placeholder="Rm 12" />
+        </div>
+        <div style="flex: 0 0 auto; display: flex; align-items: flex-end;">
+          <button class="btn accent" onclick="addClass()">Add</button>
+        </div>
+      </div>
+      <div class="schedule-grid" id="scheduleGrid"></div>
+    </div>
+
+    <div class="card">
+      <div class="card-h"><span class="marker"></span>Storage buckets</div>
+      <p style="color:var(--ink-soft);font-size:13px;margin-bottom:14px">
+        Each data type is saved to its own bucket. Changes are written immediately and only to the relevant bucket.
+      </p>
+      <div id="storageStatusGrid" class="bucket-grid"></div>
+    </div>
+
+    <div class="card">
+      <div class="card-h"><span class="marker"></span>Export &amp; Import</div>
+      <p style="color:var(--ink-soft);font-size:13px;margin-bottom:16px">
+        Export all buckets as Logseq-compatible Markdown. Import replaces current data — export first to back up.
+      </p>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+        <button class="btn" onclick="exportToMarkdown()">↓ Export to Markdown</button>
+        <label class="btn secondary" style="cursor:pointer;margin:0">
+          ↑ Import Markdown
+          <input type="file" accept=".md,.txt" style="display:none" onchange="importFromMarkdown(event)">
+        </label>
+      </div>
+      <div id="importStatus" style="margin-top:12px;font-size:13px;color:var(--ink-soft);font-style:italic"></div>
+    </div>
+
+    <div class="card">
+      <div class="card-h"><span class="marker"></span>Danger zone</div>
+      <p style="color:var(--ink-soft);font-size:13px;margin-bottom:10px">Wipe all data and start over.</p>
+      <button class="btn secondary" onclick="resetAll()">Reset everything</button>
+    </div>
+  </section>
+</div>
+
+<!-- HW Modal -->
+<div class="modal-bg" id="hwModalBg" onclick="if(event.target===this) closeHwModal()">
+  <div class="modal">
+    <div class="modal-h" id="hwModalTitle">New assignment</div>
+    <input type="hidden" id="hwId" />
+    <div class="form-row">
+      <div style="flex:2">
+        <label>What is it?</label>
+        <input type="text" id="hwTitle" placeholder="e.g. Math problems p.42" />
+      </div>
+    </div>
+    <div class="form-row">
+      <div>
+        <label>Subject</label>
+        <select id="hwSubject"></select>
+      </div>
+      <div>
+        <label>Due date</label>
+        <input type="date" id="hwDue" />
+      </div>
+      <div>
+        <label>Priority</label>
+        <select id="hwPriority">
+          <option value="low">Low</option>
+          <option value="med" selected>Medium</option>
+          <option value="high">High</option>
+        </select>
+      </div>
+    </div>
+    <div>
+      <label>Notes (optional)</label>
+      <textarea id="hwDesc" placeholder="Pages, instructions, materials needed..."></textarea>
+    </div>
+    <div style="display:flex; gap:10px; margin-top:18px; justify-content:flex-end">
+      <button class="btn secondary" onclick="closeHwModal()">Cancel</button>
+      <button class="btn accent" onclick="saveHw()">Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- Review Task Modal -->
+<div class="modal-bg" id="reviewModalBg" onclick="if(event.target===this) closeReviewModal()">
+  <div class="modal">
+    <div class="modal-h" id="reviewModalTitle">New review task</div>
+    <input type="hidden" id="reviewModalId" />
+    <input type="hidden" id="reviewModalOrigDate" />
+    <div class="form-row">
+      <div style="flex:2">
+        <label>Task</label>
+        <input type="text" id="reviewModalText" placeholder="e.g. Review Chapter 3 notes, do flashcards…" />
+      </div>
+    </div>
+    <div class="form-row">
+      <div>
+        <label>Date</label>
+        <input type="date" id="reviewModalDate" />
+      </div>
+      <div>
+        <label>Subject (optional)</label>
+        <select id="reviewModalSubject"></select>
+      </div>
+    </div>
+    <div style="display:flex; gap:10px; margin-top:18px; justify-content:flex-end">
+      <button class="btn secondary" onclick="closeReviewModal()">Cancel</button>
+      <button class="btn accent" onclick="saveReview()">Save</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  // ===== STATE =====
+  let state = {
+    basics: { name: '', grade: '6', semStart: '', semEnd: '' },
+    subjects: [],
+    schedule: { mon: [], tue: [], wed: [], thu: [], fri: [], sat: [] },
+    homework: [],
+    topics: {},
+    reviews: {},           // { "YYYY-MM-DD": [ { id, text, subjectId, completed } ] }
+    hwFilter: 'all',
+    selectedDate: null,   // ISO date string for the "Today" panel; null = real today
+    weekOffset: 0          // 0 = current week, -1 = last week, +1 = next week, etc.
+  };
+
+  const SUBJECT_COLORS = ['var(--c1)','var(--c2)','var(--c3)','var(--c4)','var(--c5)','var(--c6)','var(--c7)','var(--c8)'];
+  const DAY_NAMES = { mon: 'Monday', tue: 'Tuesday', wed: 'Wednesday', thu: 'Thursday', fri: 'Friday', sat: 'Saturday' };
+  const DAY_ORDER = ['mon','tue','wed','thu','fri','sat'];
+  const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+
+  // ===== STORAGE BUCKETS =====
+  // Each domain gets its own key so a homework save never re-serialises
+  // subjects, schedule, or topics — only the changed bucket is written.
+  const BUCKETS = {
+    basics:   'planner-basics',
+    subjects: 'planner-subjects',
+    schedule: 'planner-schedule',
+    homework: 'planner-homework',
+    topics:   'planner-topics',
+    reviews:  'planner-reviews'
+  };
+
+  // Status map: 'idle' | 'saving' | 'saved' | 'error'
+  const bucketStatus = { basics: 'idle', subjects: 'idle', schedule: 'idle', homework: 'idle', topics: 'idle', reviews: 'idle' };
+
+  // Storage wrapper: prefers window.storage (Claude Code runtime), falls back to localStorage
+  const store = {
+    async get(key) {
+      if (window.storage) {
+        try { return await window.storage.get(key); } catch (_) {}
+      }
+      const v = localStorage.getItem(key);
+      return v != null ? { value: v } : null;
+    },
+    async set(key, value) {
+      if (window.storage) {
+        try { await window.storage.set(key, value); return; } catch (_) {}
+      }
+      localStorage.setItem(key, value);
+    },
+    async delete(key) {
+      if (window.storage) {
+        try { await window.storage.delete(key); return; } catch (_) {}
+      }
+      localStorage.removeItem(key);
+    }
+  };
+
+  // Load all buckets in parallel
+  async function loadState() {
+    const entries = Object.entries(BUCKETS);
+    const results = await Promise.allSettled(
+      entries.map(([name, key]) =>
+        store.get(key).then(r => ({ name, r }))
+      )
+    );
+    for (const res of results) {
+      if (res.status === 'fulfilled' && res.value.r && res.value.r.value) {
+        try {
+          state[res.value.name] = JSON.parse(res.value.r.value);
+        } catch (_) { /* corrupt bucket — ignore, default state remains */ }
+      }
+    }
+  }
+
+  // Write only the named bucket
+  async function saveBucket(name) {
+    const key = BUCKETS[name];
+    if (!key) return;
+    bucketStatus[name] = 'saving';
+    renderStorageStatus();
+    try {
+      await store.set(key, JSON.stringify(state[name]));
+      bucketStatus[name] = 'saved';
+    } catch (e) {
+      bucketStatus[name] = 'error';
+      showToast(`Could not save ${name} — try again`);
+    }
+    renderStorageStatus();
+    // Fade 'saved' back to 'idle' after 2 s
+    if (bucketStatus[name] === 'saved') {
+      setTimeout(() => {
+        if (bucketStatus[name] === 'saved') { bucketStatus[name] = 'idle'; renderStorageStatus(); }
+      }, 2000);
+    }
+  }
+
+  // Delete all buckets
+  async function deleteAllBuckets() {
+    await Promise.allSettled(
+      Object.values(BUCKETS).map(key => store.delete(key))
+    );
+    try { await store.delete('planner-data'); } catch (_) {}
+  }
+
+  // Migrate legacy single-blob data if present
+  async function migrateLegacy() {
+    try {
+      const r = await store.get('planner-data');
+      if (r && r.value) {
+        const old = JSON.parse(r.value);
+        for (const name of Object.keys(BUCKETS)) {
+          if (old[name] !== undefined) state[name] = old[name];
+        }
+        await Promise.allSettled(Object.keys(BUCKETS).map(n => saveBucket(n)));
+        await store.delete('planner-data');
+      }
+    } catch (_) { /* no legacy data */ }
+  }
+
+  // Live storage-status widget (rendered inside Setup panel)
+  function renderStorageStatus() {
+    const el = document.getElementById('storageStatusGrid');
+    if (!el) return;
+    const icons = { idle: '○', saving: '◌', saved: '●', error: '✕' };
+    const colors = { idle: 'var(--ink-faint)', saving: 'var(--gold)', saved: 'var(--teal)', error: 'var(--accent)' };
+    const labels = { basics: 'Basics', subjects: 'Subjects', schedule: 'Schedule', homework: 'Homework', topics: 'Topics', reviews: 'Reviews' };
+    el.innerHTML = Object.entries(bucketStatus).map(([name, status]) => {
+      const size = (() => {
+        try { return (JSON.stringify(state[name]).length / 1024).toFixed(1) + ' KB'; }
+        catch (_) { return '—'; }
+      })();
+      return `
+        <div class="bucket-tile" style="border-color:${colors[status]}">
+          <span class="bucket-icon" style="color:${colors[status]}">${icons[status]}</span>
+          <div class="bucket-name">${labels[name]}</div>
+          <div class="bucket-meta">${size} · ${status}</div>
+        </div>`;
+    }).join('');
+  }
+
+  // ===== UTIL =====
+  const $ = id => document.getElementById(id);
+  const uid = () => Math.random().toString(36).slice(2, 10);
+
+  function fmtDate(d) {
+    if (!d) return '';
+    const dt = typeof d === 'string' ? new Date(d + 'T00:00:00') : d;
+    return dt.toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' });
+  }
+  function fmtTime(t) {
+    if (!t) return '';
+    const [h, m] = t.split(':');
+    const hr = parseInt(h);
+    const ampm = hr >= 12 ? 'PM' : 'AM';
+    const hr12 = hr % 12 || 12;
+    return `${hr12}:${m} ${ampm}`;
+  }
+  function dateKey(d) {
+    return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+  }
+  function todayKey() {
+    return dateKey(new Date());
+  }
+  function dayOfWeek(d) {
+    const days = ['sun','mon','tue','wed','thu','fri','sat'];
+    return days[d.getDay()];
+  }
+  function getSubject(id) {
+    return state.subjects.find(s => s.id === id);
+  }
+  function subjectColor(id) {
+    const s = getSubject(id);
+    return s ? s.color : 'var(--ink-soft)';
+  }
+  function subjectName(id) {
+    const s = getSubject(id);
+    return s ? s.name : 'Unknown';
+  }
+
+  function showToast(msg) {
+    const t = $('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2200);
+  }
+
+  // ===== TABS =====
+  document.querySelectorAll('.tab').forEach(t => {
+    t.addEventListener('click', () => {
+      document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
+      document.querySelectorAll('.panel').forEach(x => x.classList.remove('active'));
+      t.classList.add('active');
+      $('panel-' + t.dataset.tab).classList.add('active');
+      renderAll();
+    });
+  });
+
+  // ===== BASICS =====
+  function saveBasics() {
+    state.basics.name = $('studentName').value.trim();
+    state.basics.grade = $('studentGrade').value;
+    state.basics.semStart = $('semStart').value;
+    state.basics.semEnd = $('semEnd').value;
+    saveBucket('basics');
+    renderAll();
+    showToast('Saved');
+  }
+
+  function renderBasics() {
+    $('studentName').value = state.basics.name || '';
+    $('studentGrade').value = state.basics.grade || '6';
+    $('semStart').value = state.basics.semStart || '';
+    $('semEnd').value = state.basics.semEnd || '';
+  }
+
+  // ===== SUBJECTS =====
+  function addSubject() {
+    const name = $('newSubjName').value.trim();
+    if (!name) { showToast('Enter a subject name'); return; }
+    const teacher = $('newSubjTeacher').value.trim();
+    const color = SUBJECT_COLORS[state.subjects.length % SUBJECT_COLORS.length];
+    state.subjects.push({ id: uid(), name, teacher, color });
+    $('newSubjName').value = '';
+    $('newSubjTeacher').value = '';
+    saveBucket('subjects');
+    renderAll();
+    showToast('Subject added');
+  }
+  function removeSubject(id) {
+    if (!confirm('Remove this subject? Classes and homework using it will also be removed.')) return;
+    state.subjects = state.subjects.filter(s => s.id !== id);
+    for (const day of DAY_ORDER) {
+      state.schedule[day] = state.schedule[day].filter(c => c.subjectId !== id);
+    }
+    state.homework = state.homework.filter(h => h.subjectId !== id);
+    for (const m in state.topics) {
+      state.topics[m] = (state.topics[m] || []).filter(t => t.subjectId !== id);
+    }
+    for (const dateKey in state.reviews) {
+      (state.reviews[dateKey] || []).forEach(r => { if (r.subjectId === id) r.subjectId = ''; });
+    }
+    saveBucket('subjects');
+    saveBucket('schedule');
+    saveBucket('homework');
+    saveBucket('topics');
+    saveBucket('reviews');
+    renderAll();
+  }
+  function renderSubjects() {
+    const list = $('subjectList');
+    if (state.subjects.length === 0) {
+      list.innerHTML = '<div class="empty" style="padding:8px">No subjects yet — add one below.</div>';
+    } else {
+      list.innerHTML = state.subjects.map(s => `
+        <div class="subject-chip">
+          <span class="swatch" style="background:${s.color}"></span>
+          ${s.name}${s.teacher ? ` <span style="color:var(--ink-faint);font-weight:400">· ${s.teacher}</span>` : ''}
+          <span class="x" onclick="removeSubject('${s.id}')">×</span>
+        </div>
+      `).join('');
+    }
+
+    // Populate dropdowns
+    const opts = '<option value="">— Select a subject —</option>' +
+      state.subjects.map(s => `<option value="${s.id}">${s.name}</option>`).join('');
+    ['classSubject','hwSubject','topicSubject'].forEach(id => {
+      const el = $(id);
+      if (el) { const prev = el.value; el.innerHTML = opts; el.value = prev; }
+    });
+    const anyOpts = '<option value="">— Any —</option>' +
+      state.subjects.map(s => `<option value="${s.id}">${s.name}</option>`).join('');
+    ['helperSubject','reviewSubject','reviewModalSubject'].forEach(id => {
+      const el = $(id);
+      if (el) { const prev = el.value; el.innerHTML = anyOpts; el.value = prev; }
+    });
+  }
+
+  // ===== SCHEDULE =====
+  function addClass() {
+    const day = $('classDay').value;
+    const time = $('classTime').value;
+    const subjectId = $('classSubject').value;
+    const room = $('classRoom').value.trim();
+    if (!subjectId) { showToast('Pick a subject'); return; }
+    if (!time) { showToast('Pick a time'); return; }
+    state.schedule[day].push({ id: uid(), time, subjectId, room });
+    state.schedule[day].sort((a, b) => a.time.localeCompare(b.time));
+    $('classTime').value = '';
+    $('classRoom').value = '';
+    saveBucket('schedule');
+    renderAll();
+    showToast('Class added');
+  }
+  function removeClass(day, id) {
+    state.schedule[day] = state.schedule[day].filter(c => c.id !== id);
+    saveBucket('schedule');
+    renderAll();
+  }
+  function renderSchedule() {
+    const g = $('scheduleGrid');
+    g.innerHTML = DAY_ORDER.map(day => `
+      <div class="day-col">
+        <div class="day-head">${DAY_NAMES[day].slice(0,3)}</div>
+        ${state.schedule[day].length === 0
+          ? '<div class="empty" style="padding:8px;font-size:12px">No classes</div>'
+          : state.schedule[day].map(c => `
+            <div class="class-item" style="border-left-color:${subjectColor(c.subjectId)}">
+              <span class="del" onclick="removeClass('${day}','${c.id}')">×</span>
+              <div class="time">${fmtTime(c.time)}</div>
+              <div class="name">${subjectName(c.subjectId)}</div>
+              ${c.room ? `<div class="room">${c.room}</div>` : ''}
+            </div>
+          `).join('')
+        }
+      </div>
+    `).join('');
+  }
+
+  // ===== BULK PARSE =====
+  function parseBulk() {
+    const text = $('bulkSchedule').value.trim();
+    if (!text) { showToast('Paste something first'); return; }
+    const dayMap = { mon: 'mon', tue: 'tue', wed: 'wed', thu: 'thu', fri: 'fri', sat: 'sat',
+      monday: 'mon', tuesday: 'tue', wednesday: 'wed', thursday: 'thu', friday: 'fri', saturday: 'sat' };
+    const lines = text.split('\n').map(l => l.trim()).filter(Boolean);
+    let added = 0, skipped = 0;
+    for (const line of lines) {
+      // Match: Day Time Subject (Room)
+      const m = line.match(/^(\w+)[\s,]+(\d{1,2}:\d{2}(?:\s*[AaPp][Mm])?)\s+(.+?)(?:\s*\(([^)]+)\))?$/);
+      if (!m) { skipped++; continue; }
+      const dayKey = dayMap[m[1].toLowerCase()];
+      if (!dayKey) { skipped++; continue; }
+      let time = m[2].toLowerCase().replace(/\s+/g,'');
+      // Convert to 24h
+      const ampmMatch = time.match(/(\d{1,2}):(\d{2})(am|pm)?/);
+      if (ampmMatch) {
+        let h = parseInt(ampmMatch[1]);
+        const min = ampmMatch[2];
+        const ampm = ampmMatch[3];
+        if (ampm === 'pm' && h < 12) h += 12;
+        if (ampm === 'am' && h === 12) h = 0;
+        time = `${String(h).padStart(2,'0')}:${min}`;
+      }
+      const subjName = m[3].trim();
+      const room = (m[4] || '').trim();
+      // Find or create subject
+      let subj = state.subjects.find(s => s.name.toLowerCase() === subjName.toLowerCase());
+      if (!subj) {
+        const color = SUBJECT_COLORS[state.subjects.length % SUBJECT_COLORS.length];
+        subj = { id: uid(), name: subjName, teacher: '', color };
+        state.subjects.push(subj);
+      }
+      state.schedule[dayKey].push({ id: uid(), time, subjectId: subj.id, room });
+      added++;
+    }
+    // Sort all days
+    for (const d of DAY_ORDER) {
+      state.schedule[d].sort((a, b) => a.time.localeCompare(b.time));
+    }
+    saveBucket('subjects');
+    saveBucket('schedule');
+    renderAll();
+    $('bulkSchedule').value = '';
+    showToast(`Added ${added}${skipped ? `, skipped ${skipped}` : ''}`);
+  }
+
+  // ===== HOMEWORK =====
+  function openHwModal(id) {
+    if (id) {
+      const h = state.homework.find(x => x.id === id);
+      if (!h) return;
+      $('hwModalTitle').textContent = 'Edit assignment';
+      $('hwId').value = h.id;
+      $('hwTitle').value = h.title;
+      $('hwSubject').value = h.subjectId || '';
+      $('hwDue').value = h.dueDate || '';
+      $('hwPriority').value = h.priority || 'med';
+      $('hwDesc').value = h.description || '';
+    } else {
+      $('hwModalTitle').textContent = 'New assignment';
+      $('hwId').value = '';
+      $('hwTitle').value = '';
+      $('hwSubject').value = '';
+      $('hwDue').value = '';
+      $('hwPriority').value = 'med';
+      $('hwDesc').value = '';
+    }
+    $('hwModalBg').classList.add('show');
+  }
+  function closeHwModal() { $('hwModalBg').classList.remove('show'); }
+  function saveHw() {
+    const title = $('hwTitle').value.trim();
+    if (!title) { showToast('Add a title'); return; }
+    const id = $('hwId').value;
+    const data = {
+      title,
+      subjectId: $('hwSubject').value,
+      dueDate: $('hwDue').value,
+      priority: $('hwPriority').value,
+      description: $('hwDesc').value.trim()
+    };
+    if (id) {
+      const h = state.homework.find(x => x.id === id);
+      Object.assign(h, data);
+    } else {
+      state.homework.push({ id: uid(), ...data, completed: false, createdAt: Date.now() });
+    }
+    saveBucket('homework');
+    renderAll();
+    closeHwModal();
+    showToast('Saved');
+  }
+  function toggleHw(id) {
+    const h = state.homework.find(x => x.id === id);
+    if (h) { h.completed = !h.completed; saveBucket('homework'); renderAll(); }
+  }
+  function deleteHw(id) {
+    if (!confirm('Delete this assignment?')) return;
+    state.homework = state.homework.filter(h => h.id !== id);
+    saveBucket('homework');
+    renderAll();
+  }
+
+  function renderHwList() {
+    const list = $('hwList');
+    const today = todayKey();
+    const weekFromNow = new Date(); weekFromNow.setDate(weekFromNow.getDate() + 7);
+    const weekStr = dateKey(weekFromNow);
+
+    let items = [...state.homework].sort((a, b) => {
+      if (a.completed !== b.completed) return a.completed ? 1 : -1;
+      if (!a.dueDate) return 1;
+      if (!b.dueDate) return -1;
+      return a.dueDate.localeCompare(b.dueDate);
+    });
+
+    const f = state.hwFilter;
+    if (f === 'open') items = items.filter(h => !h.completed);
+    else if (f === 'done') items = items.filter(h => h.completed);
+    else if (f === 'overdue') items = items.filter(h => !h.completed && h.dueDate && h.dueDate < today);
+    else if (f === 'week') items = items.filter(h => !h.completed && h.dueDate && h.dueDate <= weekStr);
+
+    if (items.length === 0) {
+      list.innerHTML = '<div class="empty">Nothing here yet.</div>';
+      return;
+    }
+
+    list.innerHTML = items.map(h => {
+      const overdue = !h.completed && h.dueDate && h.dueDate < today;
+      const subj = getSubject(h.subjectId);
+      const pClass = `priority-${h.priority || 'med'}`;
+      const pLabel = h.priority === 'high' ? 'High' : h.priority === 'low' ? 'Low' : 'Medium';
+      return `
+        <div class="hw-item ${h.completed ? 'done' : ''}" style="border-left-color:${subj ? subj.color : 'var(--ink-soft)'}">
+          <div class="hw-check ${h.completed ? 'checked' : ''}" onclick="toggleHw('${h.id}')"></div>
+          <div class="hw-body">
+            <div class="hw-title">${escapeHtml(h.title)}</div>
+            <div class="hw-meta">
+              ${subj ? `<span><span class="swatch" style="background:${subj.color}"></span>${escapeHtml(subj.name)}</span>` : ''}
+              ${h.dueDate ? `<span style="${overdue ? 'color:var(--accent);font-weight:700' : ''}">${overdue ? '⚠ ' : '📅 '}${fmtDate(h.dueDate)}</span>` : ''}
+              <span class="priority-tag ${pClass}">${pLabel}</span>
+            </div>
+            ${h.description ? `<div class="hw-desc">${escapeHtml(h.description)}</div>` : ''}
+          </div>
+          <div class="hw-actions">
+            <button class="btn ghost" onclick="openHwModal('${h.id}')">Edit</button>
+            <button class="btn ghost" onclick="deleteHw('${h.id}')">Del</button>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  function escapeHtml(s) {
+    return (s || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+
+  // ===== FILTERS =====
+  document.querySelectorAll('#hwFilters .filter-chip').forEach(c => {
+    c.addEventListener('click', () => {
+      document.querySelectorAll('#hwFilters .filter-chip').forEach(x => x.classList.remove('active'));
+      c.classList.add('active');
+      state.hwFilter = c.dataset.filter;
+      renderHwList();
+    });
+  });
+
+  document.querySelectorAll('#reviewFilters .filter-chip').forEach(c => {
+    c.addEventListener('click', () => {
+      document.querySelectorAll('#reviewFilters .filter-chip').forEach(x => x.classList.remove('active'));
+      c.classList.add('active');
+      reviewFilter = c.dataset.rfilter;
+      renderAllReviews();
+    });
+  });
+
+  // ===== REVIEW TASKS =====
+  let reviewFilter = 'all';
+
+  function addReviewTask() {
+    const text = $('reviewText').value.trim();
+    if (!text) { showToast('Enter a task'); return; }
+    const dateStr = dateKey(getSelectedDate());
+    const subjectId = $('reviewSubject').value;
+    if (!state.reviews[dateStr]) state.reviews[dateStr] = [];
+    state.reviews[dateStr].push({ id: uid(), text, subjectId, completed: false });
+    $('reviewText').value = '';
+    saveBucket('reviews');
+    renderToday();
+    renderWeek();
+    renderAllReviews();
+  }
+
+  function openReviewModal(dateStr, id) {
+    if (id && dateStr) {
+      const r = (state.reviews[dateStr] || []).find(x => x.id === id);
+      if (!r) return;
+      $('reviewModalTitle').textContent = 'Edit review task';
+      $('reviewModalId').value = id;
+      $('reviewModalOrigDate').value = dateStr;
+      $('reviewModalText').value = r.text;
+      $('reviewModalDate').value = dateStr;
+      $('reviewModalSubject').value = r.subjectId || '';
+    } else {
+      $('reviewModalTitle').textContent = 'New review task';
+      $('reviewModalId').value = '';
+      $('reviewModalOrigDate').value = '';
+      $('reviewModalText').value = '';
+      $('reviewModalDate').value = dateStr || todayKey();
+      $('reviewModalSubject').value = '';
+    }
+    $('reviewModalBg').classList.add('show');
+  }
+
+  function closeReviewModal() { $('reviewModalBg').classList.remove('show'); }
+
+  function saveReview() {
+    const text = $('reviewModalText').value.trim();
+    if (!text) { showToast('Enter a task'); return; }
+    const newDate = $('reviewModalDate').value;
+    if (!newDate) { showToast('Pick a date'); return; }
+    const subjectId = $('reviewModalSubject').value;
+    const id = $('reviewModalId').value;
+    const origDate = $('reviewModalOrigDate').value;
+
+    if (id && origDate) {
+      const origList = state.reviews[origDate] || [];
+      const existing = origList.find(x => x.id === id);
+      const completed = existing ? existing.completed : false;
+      state.reviews[origDate] = origList.filter(x => x.id !== id);
+      if (!state.reviews[newDate]) state.reviews[newDate] = [];
+      state.reviews[newDate].push({ id, text, subjectId, completed });
+    } else {
+      if (!state.reviews[newDate]) state.reviews[newDate] = [];
+      state.reviews[newDate].push({ id: uid(), text, subjectId, completed: false });
+    }
+
+    saveBucket('reviews');
+    renderAll();
+    closeReviewModal();
+    showToast('Saved');
+  }
+
+  function toggleReview(dateStr, id) {
+    const list = state.reviews[dateStr] || [];
+    const r = list.find(x => x.id === id);
+    if (r) { r.completed = !r.completed; saveBucket('reviews'); renderToday(); renderWeek(); renderAllReviews(); }
+  }
+
+  function deleteReview(dateStr, id) {
+    state.reviews[dateStr] = (state.reviews[dateStr] || []).filter(x => x.id !== id);
+    saveBucket('reviews');
+    renderToday();
+    renderWeek();
+    renderAllReviews();
+  }
+
+  function renderAllReviews() {
+    const el = $('allReviewsList');
+    if (!el) return;
+    const today = todayKey();
+
+    let all = [];
+    for (const [dateStr, list] of Object.entries(state.reviews)) {
+      (list || []).forEach(r => all.push({ ...r, dateStr }));
+    }
+
+    if (reviewFilter === 'upcoming') all = all.filter(r => r.dateStr > today);
+    else if (reviewFilter === 'today') all = all.filter(r => r.dateStr === today);
+    else if (reviewFilter === 'past') all = all.filter(r => r.dateStr < today);
+    else if (reviewFilter === 'open') all = all.filter(r => !r.completed);
+    else if (reviewFilter === 'done') all = all.filter(r => r.completed);
+
+    // Sort: today and upcoming first (ascending), past after (descending)
+    all.sort((a, b) => {
+      const af = a.dateStr >= today, bf = b.dateStr >= today;
+      if (af && !bf) return -1;
+      if (!af && bf) return 1;
+      return af ? a.dateStr.localeCompare(b.dateStr) : b.dateStr.localeCompare(a.dateStr);
+    });
+
+    if (all.length === 0) {
+      el.innerHTML = '<div class="empty">No review tasks here.</div>';
+      return;
+    }
+
+    // Group by date
+    const groups = {};
+    all.forEach(r => { if (!groups[r.dateStr]) groups[r.dateStr] = []; groups[r.dateStr].push(r); });
+
+    el.innerHTML = Object.entries(groups).map(([dateStr, items]) => {
+      const isToday = dateStr === today;
+      const isPast = dateStr < today;
+      const label = isToday ? 'Today' : fmtDate(dateStr);
+      const doneCount = items.filter(r => r.completed).length;
+      return `
+        <div style="margin-bottom:20px">
+          <div style="font-family:'Fraunces',serif;font-weight:600;font-size:15px;margin-bottom:8px;display:flex;align-items:center;gap:8px">
+            <span style="color:${isPast && !isToday ? 'var(--ink-faint)' : isToday ? 'var(--accent)' : 'var(--ink)'}">${label}</span>
+            ${isToday ? '<span style="font-family:Manrope,sans-serif;font-size:10px;background:var(--accent);color:var(--paper);padding:2px 8px;border-radius:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase">Today</span>' : ''}
+            <span style="font-size:12px;color:var(--ink-faint);font-family:Manrope,sans-serif;font-weight:400">${doneCount}/${items.length} done</span>
+          </div>
+          <div class="hw-list">
+            ${items.map(r => {
+              const subj = getSubject(r.subjectId);
+              return `
+                <div class="hw-item ${r.completed ? 'done' : ''}" style="border-left-color:${subj ? subj.color : 'var(--rule)'}">
+                  <div class="hw-check ${r.completed ? 'checked' : ''}" onclick="toggleReview('${dateStr}','${r.id}')"></div>
+                  <div class="hw-body">
+                    <div class="hw-title">${escapeHtml(r.text)}</div>
+                    ${subj ? `<div class="hw-meta"><span><span class="swatch" style="background:${subj.color}"></span>${escapeHtml(subj.name)}</span></div>` : ''}
+                  </div>
+                  <div class="hw-actions">
+                    <button class="btn ghost" onclick="openReviewModal('${dateStr}','${r.id}')">Edit</button>
+                    <button class="btn ghost" onclick="deleteReview('${dateStr}','${r.id}')">Del</button>
+                  </div>
+                </div>
+              `;
+            }).join('')}
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  // ===== TODAY (or any selected date) =====
+  function getSelectedDate() {
+    if (state.selectedDate) {
+      return new Date(state.selectedDate + 'T00:00:00');
+    }
+    return new Date();
+  }
+
+  function jumpToToday() {
+    state.selectedDate = null;
+    renderToday();
+  }
+
+  function shiftDay(delta) {
+    const cur = getSelectedDate();
+    cur.setDate(cur.getDate() + delta);
+    state.selectedDate = dateKey(cur);
+    renderToday();
+  }
+
+  function renderToday() {
+    const now = new Date();
+    const realTodayStr = todayKey();
+    const selected = getSelectedDate();
+    const selectedStr = dateKey(selected);
+    const isToday = selectedStr === realTodayStr;
+
+    // Update nav label
+    const navLabel = $('dayNavLabel');
+    if (navLabel) {
+      navLabel.textContent = selected.toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' });
+    }
+
+    // Update title & date display
+    $('todayTitle').innerHTML = isToday
+      ? 'Today<em> at a glance</em>'
+      : `${selected.toLocaleDateString(undefined, { weekday: 'long' })}<em> at a glance</em>`;
+    $('todayDate').textContent = selected.toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' }) + (isToday ? '' : '  ·  (not today)');
+    $('dateStamp').textContent = now.toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric' });
+
+    // Day-of-week from selected date
+    const dow = dayOfWeek(selected);
+    const dayClasses = state.schedule[dow] || [];
+
+    // Next day
+    const nextDay = new Date(selected); nextDay.setDate(selected.getDate() + 1);
+    const nextDayStr = dateKey(nextDay);
+
+    // Open counts for stats (uncompleted only)
+    const hwSelectedOpen = state.homework.filter(h => !h.completed && h.dueDate === selectedStr);
+    const hwNextOpen    = state.homework.filter(h => !h.completed && h.dueDate === nextDayStr);
+    const hwOpen        = state.homework.filter(h => !h.completed);
+    // All items for display (completed stay visible — use Delete to remove)
+    const hwSelectedAll = state.homework.filter(h => h.dueDate === selectedStr);
+    const hwNextAll     = state.homework.filter(h => h.dueDate === nextDayStr);
+
+    // Update stat labels
+    $('statClassesLabel').textContent = isToday ? 'Classes today' : `Classes ${selected.toLocaleDateString(undefined, { weekday: 'short' })}`;
+    $('statHwTodayLabel').textContent = isToday ? 'Due today' : 'Due that day';
+    $('statHwTomorrowLabel').textContent = isToday ? 'Due tomorrow' : 'Due next day';
+    $('todayClassesHeading').textContent = isToday ? "Today's Classes" : `Classes on ${selected.toLocaleDateString(undefined, { weekday: 'long' })}`;
+
+    $('statClasses').textContent = dayClasses.length;
+    $('statHwToday').textContent = hwSelectedOpen.length;
+    $('statHwTomorrow').textContent = hwNextOpen.length;
+    $('statHwOpen').textContent = hwOpen.length;
+
+    // Classes for selected day
+    const tcEl = $('todayClasses');
+    if (dayClasses.length === 0) {
+      tcEl.innerHTML = `<div class="empty">No classes scheduled${isToday ? ' today' : ' that day'}.</div>`;
+    } else {
+      tcEl.innerHTML = dayClasses.map(c => `
+        <div class="class-item" style="border-left-color:${subjectColor(c.subjectId)};margin-bottom:8px">
+          <div class="time">${fmtTime(c.time)}</div>
+          <div class="name">${subjectName(c.subjectId)}</div>
+          ${c.room ? `<div class="room">${c.room}</div>` : ''}
+        </div>
+      `).join('');
+    }
+
+    // Homework — show all (including completed); stats above use open-only counts
+    const upcoming = [...hwSelectedAll, ...hwNextAll];
+    const thEl = $('todayHomework');
+    if (upcoming.length === 0) {
+      thEl.innerHTML = `<div class="empty">Nothing due ${isToday ? 'today or tomorrow' : 'that day or the next'}. 🎉</div>`;
+    } else {
+      thEl.innerHTML = upcoming.map(h => {
+        const subj = getSubject(h.subjectId);
+        const isThisDay = h.dueDate === selectedStr;
+        return `
+          <div class="hw-item ${h.completed ? 'done' : ''}" style="border-left-color:${subj ? subj.color : 'var(--ink-soft)'};padding:10px 12px;margin-bottom:8px">
+            <div class="hw-check ${h.completed ? 'checked' : ''}" onclick="toggleHw('${h.id}')"></div>
+            <div class="hw-body">
+              <div class="hw-title" style="font-size:14px">${escapeHtml(h.title)}</div>
+              <div class="hw-meta">
+                ${subj ? `<span>${escapeHtml(subj.name)}</span>` : ''}
+                <span>${isThisDay ? (isToday ? 'Today' : 'That day') : (isToday ? 'Tomorrow' : 'Next day')}</span>
+              </div>
+            </div>
+            <div class="hw-actions">
+              <button class="btn ghost" onclick="openHwModal('${h.id}')">Edit</button>
+              <button class="btn ghost" onclick="deleteHw('${h.id}')">Del</button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // Review tasks for selected day
+    $('todayReviewsHeading').textContent = isToday ? 'Review Tasks' : `Review Tasks — ${selected.toLocaleDateString(undefined, { weekday: 'long', month: 'short', day: 'numeric' })}`;
+    const reviews = state.reviews[selectedStr] || [];
+    const trEl = $('todayReviews');
+    if (trEl) {
+      if (reviews.length === 0) {
+        trEl.innerHTML = '<div class="empty">No review tasks for this day — add one below.</div>';
+      } else {
+        trEl.innerHTML = reviews.map(r => {
+          const subj = getSubject(r.subjectId);
+          return `
+            <div class="hw-item ${r.completed ? 'done' : ''}" style="border-left-color:${subj ? subj.color : 'var(--rule)'};padding:10px 12px;margin-bottom:8px">
+              <div class="hw-check ${r.completed ? 'checked' : ''}" onclick="toggleReview('${selectedStr}','${r.id}')"></div>
+              <div class="hw-body">
+                <div class="hw-title" style="font-size:14px">${escapeHtml(r.text)}</div>
+                ${subj ? `<div class="hw-meta"><span><span class="swatch" style="background:${subj.color}"></span>${escapeHtml(subj.name)}</span></div>` : ''}
+              </div>
+              <div class="hw-actions">
+                <button class="btn ghost" onclick="openReviewModal('${selectedStr}','${r.id}')">Edit</button>
+                <button class="btn ghost" onclick="deleteReview('${selectedStr}','${r.id}')">Del</button>
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
+    }
+  }
+
+  // Wire up the date picker
+  // (handled in init below)
+
+  // ===== WEEK =====
+  function shiftWeek(delta) {
+    state.weekOffset += delta;
+    renderWeek();
+  }
+  function jumpToThisWeek() {
+    state.weekOffset = 0;
+    renderWeek();
+  }
+
+  function renderWeek() {
+    const now = new Date();
+    const dow = now.getDay();
+    const monday = new Date(now);
+    monday.setDate(now.getDate() - ((dow + 6) % 7) + (state.weekOffset * 7));
+
+    const sunday = new Date(monday);
+    sunday.setDate(monday.getDate() + 6);
+
+    // Update title and range
+    const offset = state.weekOffset;
+    $('weekTitle').innerHTML = offset === 0
+      ? 'This week\'s<em> rhythm</em>'
+      : offset < 0
+        ? `${Math.abs(offset)} week${Math.abs(offset) > 1 ? 's' : ''} ago<em></em>`
+        : `${offset} week${offset > 1 ? 's' : ''} ahead<em></em>`;
+
+    const rangeStr = `${monday.toLocaleDateString(undefined, { month: 'short', day: 'numeric' })} – ${sunday.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}`;
+    $('weekRange').textContent = rangeStr;
+
+    const wc = $('weekContent');
+    wc.innerHTML = DAY_ORDER.map((day, i) => {
+      const d = new Date(monday);
+      d.setDate(monday.getDate() + i);
+      const dStr = dateKey(d);
+      const classes = state.schedule[day] || [];
+      const hw = state.homework.filter(h => h.dueDate === dStr);
+      const revs = state.reviews[dStr] || [];
+
+      return `
+        <div class="week-day-block">
+          <div class="week-day-head">
+            <div class="week-day-name">${DAY_NAMES[day]}</div>
+            <div class="week-day-date">${d.toLocaleDateString(undefined, { month: 'long', day: 'numeric' })}</div>
+          </div>
+          <div class="week-day-content">
+            <div>
+              <div class="sub-head">Classes</div>
+              ${classes.length === 0
+                ? '<div class="empty" style="padding:8px;text-align:left">No classes</div>'
+                : `<ul class="mini-list">${classes.map(c => `
+                  <li><span class="swatch" style="background:${subjectColor(c.subjectId)}"></span>
+                    <strong>${fmtTime(c.time)}</strong> · ${subjectName(c.subjectId)}
+                    ${c.room ? `<span style="color:var(--ink-faint);font-style:italic"> · ${c.room}</span>` : ''}
+                  </li>`).join('')}</ul>`
+              }
+            </div>
+            <div>
+              <div class="sub-head">Due this day</div>
+              ${hw.length === 0
+                ? '<div class="empty" style="padding:8px;text-align:left">Nothing due</div>'
+                : `<ul class="mini-list">${hw.map(h => `
+                  <li>
+                    <span class="swatch" style="background:${subjectColor(h.subjectId)}"></span>
+                    <span style="${h.completed ? 'text-decoration:line-through;color:var(--ink-faint)' : ''}">
+                      ${escapeHtml(h.title)}
+                    </span>
+                  </li>`).join('')}</ul>`
+              }
+            </div>
+            <div>
+              <div class="sub-head">Review Tasks</div>
+              ${revs.length === 0
+                ? '<div class="empty" style="padding:8px;text-align:left">None</div>'
+                : `<ul class="mini-list">${revs.map(r => `
+                  <li>
+                    <span class="hw-check ${r.completed ? 'checked' : ''}" style="width:14px;height:14px;min-width:14px;font-size:10px;cursor:pointer" onclick="toggleReview('${dStr}','${r.id}')"></span>
+                    <span style="${r.completed ? 'text-decoration:line-through;color:var(--ink-faint)' : ''}">
+                      ${escapeHtml(r.text)}${r.subjectId ? ` <span style="color:var(--ink-faint);font-style:italic">· ${subjectName(r.subjectId)}</span>` : ''}
+                    </span>
+                  </li>`).join('')}</ul>`
+              }
+            </div>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  // ===== MONTH / SEMESTER =====
+  function getMonthsInSemester() {
+    if (!state.basics.semStart || !state.basics.semEnd) {
+      // Default: current month plus next 5
+      const months = [];
+      const now = new Date();
+      for (let i = 0; i < 6; i++) {
+        const d = new Date(now.getFullYear(), now.getMonth() + i, 1);
+        months.push({ key: `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`, label: `${MONTHS[d.getMonth()]} ${d.getFullYear()}` });
+      }
+      return months;
+    }
+    const start = new Date(state.basics.semStart + 'T00:00:00');
+    const end = new Date(state.basics.semEnd + 'T00:00:00');
+    const months = [];
+    let cur = new Date(start.getFullYear(), start.getMonth(), 1);
+    while (cur <= end) {
+      months.push({
+        key: `${cur.getFullYear()}-${String(cur.getMonth()+1).padStart(2,'0')}`,
+        label: `${MONTHS[cur.getMonth()]} ${cur.getFullYear()}`
+      });
+      cur.setMonth(cur.getMonth() + 1);
+    }
+    return months;
+  }
+
+  function renderMonthDropdown() {
+    const months = getMonthsInSemester();
+    $('topicMonth').innerHTML = months.map(m => `<option value="${m.key}">${m.label}</option>`).join('');
+  }
+
+  function addTopic() {
+    const month = $('topicMonth').value;
+    const subjectId = $('topicSubject').value;
+    const text = $('topicText').value.trim();
+    if (!subjectId) { showToast('Pick a subject'); return; }
+    if (!text) { showToast('Type a topic'); return; }
+    if (!state.topics[month]) state.topics[month] = [];
+    state.topics[month].push({ id: uid(), subjectId, text });
+    $('topicText').value = '';
+    saveBucket('topics');
+    renderAll();
+    showToast('Topic added');
+  }
+  function removeTopic(monthKey, id) {
+    state.topics[monthKey] = (state.topics[monthKey] || []).filter(t => t.id !== id);
+    saveBucket('topics');
+    renderAll();
+  }
+
+  function renderMonthList() {
+    const months = getMonthsInSemester();
+    const list = $('monthList');
+    const now = new Date();
+    const currentKey = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;
+
+    if (months.length === 0) {
+      list.innerHTML = '<div class="empty">Set your semester dates in Setup to see your roadmap.</div>';
+      return;
+    }
+
+    list.innerHTML = months.map(m => {
+      const topics = state.topics[m.key] || [];
+      const isNow = m.key === currentKey;
+      return `
+        <div class="month-block">
+          <div class="month-head">
+            <div class="month-name">${m.label}${isNow ? '<em>· current month</em>' : ''}</div>
+            <div style="font-size:12px;opacity:0.7">${topics.length} topic${topics.length !== 1 ? 's' : ''}</div>
+          </div>
+          <div class="month-body">
+            ${topics.length === 0
+              ? '<div class="empty" style="padding:8px">No topics yet for this month.</div>'
+              : topics.map(t => {
+                const subj = getSubject(t.subjectId);
+                return `
+                  <div class="topic-row">
+                    <div class="topic-subj">
+                      <span class="swatch" style="background:${subj ? subj.color : 'var(--ink-soft)'}"></span>
+                      ${subj ? escapeHtml(subj.name) : 'Unknown'}
+                    </div>
+                    <div class="topic-text">${escapeHtml(t.text)}</div>
+                    <div class="del" onclick="removeTopic('${m.key}','${t.id}')">×</div>
+                  </div>
+                `;
+              }).join('')
+            }
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  // ===== STUDY HELPER =====
+  function toggleHelperDate() {
+    const type = $('helperType').value;
+    const wrap = $('helperDateWrap');
+    wrap.style.display = type === 'daily' ? '' : 'none';
+  }
+
+  function generateHelper() {
+    const type = $('helperType').value;
+    const subjId = $('helperSubject').value;
+    const details = $('helperDetails').value.trim();
+    const subj = getSubject(subjId);
+    let html = '';
+
+    if (type === 'daily') {
+      const pickedDate = $('helperDate').value;
+      const targetDate = pickedDate ? new Date(pickedDate + 'T00:00:00') : new Date();
+      const targetStr = dateKey(targetDate);
+      const realTodayStr = todayKey();
+      const isToday = targetStr === realTodayStr;
+      const dayLabel = targetDate.toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric' });
+
+      const nextDay = new Date(targetDate); nextDay.setDate(targetDate.getDate() + 1);
+      const nextDayStr = dateKey(nextDay);
+
+      const hwTarget = state.homework.filter(h => !h.completed && h.dueDate === targetStr);
+      const hwNext = state.homework.filter(h => !h.completed && h.dueDate === nextDayStr);
+      const hwSoon = state.homework.filter(h => !h.completed && h.dueDate && h.dueDate > nextDayStr).slice(0, 3);
+
+      html = `<h3>Study Plan for ${escapeHtml(dayLabel)}${isToday ? ' (Today)' : ''}</h3>
+<p>Here's a suggested order based on what's due and priority. Aim for short focused blocks with breaks.</p>
+<ul>`;
+      if (hwTarget.length === 0 && hwNext.length === 0) {
+        html += `<li>Nothing urgent on this date. Use this time for review or get ahead on long-term work.</li>`;
+      }
+      let block = 1;
+      const priorityOrder = { high: 0, med: 1, low: 2 };
+      [...hwTarget, ...hwNext].sort((a, b) => priorityOrder[a.priority || 'med'] - priorityOrder[b.priority || 'med']).forEach(h => {
+        const s = getSubject(h.subjectId);
+        const tag = h.dueDate === targetStr ? '⚠ DUE THIS DAY' : 'Due next day';
+        const time = h.priority === 'high' ? '30–40 min' : h.priority === 'low' ? '15–20 min' : '20–30 min';
+        html += `<li><strong>Block ${block++} (${time}):</strong> ${escapeHtml(h.title)} ${s ? `(${escapeHtml(s.name)})` : ''} — <em>${tag}</em></li>`;
+      });
+      html += `<li><strong>Break:</strong> Stand up, drink water, stretch (5–10 min).</li>`;
+      if (hwSoon.length > 0) {
+        html += `<li><strong>Get ahead:</strong> Spend 15 min on:</li>`;
+        hwSoon.forEach(h => {
+          html += `<li style="margin-left:20px">${escapeHtml(h.title)} (due ${fmtDate(h.dueDate)})</li>`;
+        });
+      }
+      html += `</ul><h3>Tips</h3><ul>
+<li>Start with the hardest subject when your brain is freshest.</li>
+<li>Put your phone in another room or use a focus app.</li>
+<li>If you get stuck, move on and come back — don't lose the whole block.</li>
+</ul>`;
+    }
+
+    else if (type === 'weekly') {
+      const now = new Date();
+      const monday = new Date(now); monday.setDate(now.getDate() - ((now.getDay() + 6) % 7));
+      const weekEnd = new Date(monday); weekEnd.setDate(monday.getDate() + 7);
+      const weekStr = dateKey(weekEnd);
+      const thisWeekHw = state.homework.filter(h => !h.completed && h.dueDate && h.dueDate >= todayKey() && h.dueDate < weekStr);
+
+      html = `<h3>Weekly Study Schedule</h3>
+<p>A balanced plan for the week ahead. Adjust times to fit your schedule.</p>`;
+
+      DAY_ORDER.forEach((day, i) => {
+        const d = new Date(monday); d.setDate(monday.getDate() + i);
+        const dStr = dateKey(d);
+        const classes = state.schedule[day] || [];
+        const dueThisDay = thisWeekHw.filter(h => h.dueDate === dStr);
+        const dueNextDay = thisWeekHw.filter(h => {
+          const next = new Date(d); next.setDate(d.getDate() + 1);
+          return h.dueDate === dateKey(next);
+        });
+
+        html += `<h3 style="font-size:15px;color:var(--ink)">${DAY_NAMES[day]} (${d.toLocaleDateString(undefined,{month:'short',day:'numeric'})})</h3><ul>`;
+        if (classes.length > 0) {
+          html += `<li><strong>Classes:</strong> ${classes.map(c => subjectName(c.subjectId)).join(', ')}</li>`;
+        }
+        if (dueNextDay.length > 0) {
+          html += `<li><strong>Tonight, finish:</strong> ${dueNextDay.map(h => escapeHtml(h.title)).join(', ')}</li>`;
+        } else if (dueThisDay.length > 0 && i < 4) {
+          html += `<li>Light night — review notes from today's classes (15–20 min).</li>`;
+        } else if (i < 4) {
+          html += `<li>Pick one subject from this week's lessons and review notes (20 min).</li>`;
+        }
+        html += `</ul>`;
+      });
+
+      html += `<h3>Weekend</h3><ul>
+<li><strong>Saturday:</strong> Work on long-term projects or larger assignments due next week.</li>
+<li><strong>Sunday evening:</strong> Quick review of what's coming Monday. Pack your bag.</li>
+</ul>`;
+    }
+
+    else if (type === 'test') {
+      const subjLabel = subj ? subj.name : 'the subject';
+      const topic = details || 'the upcoming test';
+      html = `<h3>Test Prep Checklist — ${escapeHtml(subjLabel)}</h3>
+<p>For: <strong>${escapeHtml(topic)}</strong></p>
+<h3>One week before</h3><ul>
+<li>Find out exactly what's covered — ask your teacher if unclear.</li>
+<li>Gather all notes, handouts, and textbook chapters in one place.</li>
+<li>Make a list of every topic and rate yourself 1–5 on each.</li>
+<li>Spend 30 min on your weakest topic.</li>
+</ul>
+<h3>3–4 days before</h3><ul>
+<li>Rewrite messy notes into a one-page summary sheet.</li>
+<li>Do practice problems for the two weakest topics.</li>
+<li>If there's a study guide, fill it in.</li>
+</ul>
+<h3>Day before</h3><ul>
+<li>Quick review of your summary sheet (no new material!).</li>
+<li>Quiz yourself or have someone quiz you.</li>
+<li>Pack everything you need — pencils, calculator, water.</li>
+<li>Sleep at least 8 hours. This matters more than late cramming.</li>
+</ul>
+<h3>Day of</h3><ul>
+<li>Eat a real breakfast.</li>
+<li>Skim your summary sheet once on the way in — don't try to learn anything new.</li>
+<li>Read each question twice before answering.</li>
+<li>If stuck on a problem, skip it and come back.</li>
+</ul>`;
+    }
+
+    else if (type === 'project') {
+      const proj = details || 'your project';
+      html = `<h3>Breaking Down: ${escapeHtml(proj)}</h3>
+<p>Big projects feel impossible until you split them into small pieces. Here's a framework.</p>
+<h3>Step 1: Understand the assignment (30 min)</h3><ul>
+<li>Re-read the instructions. Highlight what you need to produce.</li>
+<li>Write down the due date and any checkpoints.</li>
+<li>List every requirement (word count, sources, format, etc.).</li>
+</ul>
+<h3>Step 2: Plan (45 min)</h3><ul>
+<li>Brainstorm — write down every idea, even bad ones.</li>
+<li>Pick your topic / angle.</li>
+<li>Make a rough outline with 3–5 main sections.</li>
+</ul>
+<h3>Step 3: Research / Gather (1–2 hours, split over days)</h3><ul>
+<li>Find at least 2 more sources than you need.</li>
+<li>Take notes by paraphrasing, not copying.</li>
+<li>Save every source — you'll need them for citations.</li>
+</ul>
+<h3>Step 4: First draft (split into 2–3 sittings)</h3><ul>
+<li>Don't try to make it perfect. Just get it down.</li>
+<li>Work section by section, not start-to-end.</li>
+<li>If stuck, write [FIX LATER] and keep moving.</li>
+</ul>
+<h3>Step 5: Revise (the day after drafting)</h3><ul>
+<li>Read it out loud. You'll catch awkward sentences.</li>
+<li>Check each requirement from Step 1 — did you hit them all?</li>
+<li>Have someone else read it if possible.</li>
+</ul>
+<h3>Step 6: Polish &amp; submit</h3><ul>
+<li>Format, citations, spell-check.</li>
+<li>Submit early if you can — anything could go wrong at 11:59.</li>
+</ul>`;
+    }
+
+    else if (type === 'reading') {
+      const what = details || 'your reading';
+      html = `<h3>Reading Guide: ${escapeHtml(what)}</h3>
+<h3>Before you read</h3><ul>
+<li>Skim headings, captions, and any bold words first (2 min).</li>
+<li>Ask: what's this about? What do I already know?</li>
+<li>Look at any questions you'll need to answer — keep them in mind.</li>
+</ul>
+<h3>While you read</h3><ul>
+<li>Read in chunks (a section at a time, not the whole thing).</li>
+<li>After each section, pause and summarize in your head: "the main point was..."</li>
+<li>Mark things you don't understand with a ? — come back to them.</li>
+<li>For fiction: track characters, setting, conflict. For nonfiction: main idea, supporting details, examples.</li>
+</ul>
+<h3>After you read</h3><ul>
+<li>Write a 3–5 sentence summary in your own words.</li>
+<li>List any vocab you didn't know.</li>
+<li>Answer any assigned questions while it's fresh.</li>
+</ul>
+<h3>If it's boring or hard</h3><ul>
+<li>Read for 15 min, take a 2 min break, repeat. It's easier in chunks.</li>
+<li>Talk through the ideas out loud — even to yourself.</li>
+<li>Look up confusing words right away, don't push through.</li>
+</ul>`;
+    }
+
+    $('helperOutput').innerHTML = `<div class="study-output">${html}</div>`;
+    showToast('Generated');
+  }
+
+  // ===== EXPORT / IMPORT =====
+
+  function mdEsc(s) {
+    // Escape backslashes only; ` — ` is our separator so we swap it in content
+    return (s || '').replace(/\\/g, '\\\\').replace(/ — /g, ' – ');
+  }
+
+  function exportToMarkdown() {
+    const lines = [];
+    const now = new Date();
+    const ownerName = state.basics.name || 'Student';
+
+    lines.push(`# Study Ledger — ${mdEsc(ownerName)}`);
+    lines.push(`- exported:: ${now.toISOString()}`);
+    lines.push('');
+
+    // Basics
+    lines.push('## Basics');
+    lines.push(`- name:: ${mdEsc(state.basics.name)}`);
+    lines.push(`- grade:: ${state.basics.grade || ''}`);
+    lines.push(`- semStart:: ${state.basics.semStart || ''}`);
+    lines.push(`- semEnd:: ${state.basics.semEnd || ''}`);
+    lines.push('');
+
+    // Subjects
+    lines.push('## Subjects');
+    if (state.subjects.length === 0) {
+      lines.push('- *(none)*');
+    } else {
+      state.subjects.forEach(s => {
+        lines.push(`- ${mdEsc(s.name)}`);
+        if (s.teacher) lines.push(`  - teacher:: ${mdEsc(s.teacher)}`);
+        lines.push(`  - color:: ${s.color}`);
+      });
+    }
+    lines.push('');
+
+    // Schedule
+    lines.push('## Schedule');
+    let hasSchedule = false;
+    DAY_ORDER.forEach(day => {
+      const classes = state.schedule[day] || [];
+      if (classes.length === 0) return;
+      hasSchedule = true;
+      lines.push(`### ${DAY_NAMES[day]}`);
+      classes.forEach(c => {
+        const subj = getSubject(c.subjectId);
+        const room = c.room ? ` (${c.room})` : '';
+        lines.push(`- ${fmtTime(c.time)} — ${mdEsc(subj ? subj.name : 'Unknown')}${room}`);
+      });
+      lines.push('');
+    });
+    if (!hasSchedule) lines.push('- *(none)*\n');
+
+    // Homework
+    lines.push('## Homework');
+    if (state.homework.length === 0) {
+      lines.push('- *(none)*');
+    } else {
+      const sorted = [...state.homework].sort((a, b) => (a.dueDate || '').localeCompare(b.dueDate || ''));
+      sorted.forEach(h => {
+        const check = h.completed ? '[x]' : '[ ]';
+        const subj = getSubject(h.subjectId);
+        lines.push(`- ${check} ${mdEsc(h.title)}`);
+        if (subj) lines.push(`  - subject:: ${mdEsc(subj.name)}`);
+        if (h.dueDate) lines.push(`  - due:: ${h.dueDate}`);
+        if (h.priority) lines.push(`  - priority:: ${h.priority}`);
+        if (h.description) lines.push(`  - notes:: ${mdEsc(h.description)}`);
+      });
+    }
+    lines.push('');
+
+    // Topics
+    lines.push('## Topics');
+    const topicEntries = Object.entries(state.topics)
+      .filter(([, items]) => items && items.length > 0)
+      .sort(([a], [b]) => a.localeCompare(b));
+    if (topicEntries.length === 0) {
+      lines.push('- *(none)*');
+    } else {
+      topicEntries.forEach(([mk, items]) => {
+        const [yr, mo] = mk.split('-');
+        lines.push(`### ${mk} — ${MONTHS[parseInt(mo, 10) - 1]} ${yr}`);
+        items.forEach(t => {
+          const subj = getSubject(t.subjectId);
+          lines.push(`- ${mdEsc(subj ? subj.name : 'Unknown')} — ${mdEsc(t.text)}`);
+        });
+        lines.push('');
+      });
+    }
+    lines.push('');
+
+    // Reviews
+    lines.push('## Reviews');
+    const reviewEntries = Object.entries(state.reviews)
+      .filter(([, items]) => items && items.length > 0)
+      .sort(([a], [b]) => a.localeCompare(b));
+    if (reviewEntries.length === 0) {
+      lines.push('- *(none)*');
+    } else {
+      reviewEntries.forEach(([ds, items]) => {
+        lines.push(`### ${ds} — ${fmtDate(ds)}`);
+        items.forEach(r => {
+          const check = r.completed ? '[x]' : '[ ]';
+          const subj = getSubject(r.subjectId);
+          lines.push(`- ${check} ${mdEsc(r.text)}`);
+          if (subj) lines.push(`  - subject:: ${mdEsc(subj.name)}`);
+        });
+        lines.push('');
+      });
+    }
+
+    const blob = new Blob([lines.join('\n')], { type: 'text/markdown;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `study-ledger-${dateKey(now)}.md`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    showToast('Exported!');
+  }
+
+  function parseMarkdownExport(md) {
+    const result = {
+      basics:   { name: '', grade: '6', semStart: '', semEnd: '' },
+      subjects: [],
+      schedule: { mon: [], tue: [], wed: [], thu: [], fri: [], sat: [] },
+      homework: [],
+      topics:   {},
+      reviews:  {},
+      hwFilter: 'all', selectedDate: null, weekOffset: 0
+    };
+    const subjByName = {}; // lowercase name → id
+
+    function resolveSubjId(name) {
+      return subjByName[(name || '').toLowerCase().replace(/\\\\/g, '\\')] || '';
+    }
+
+    let section = null, subSection = null, currentItem = null;
+
+    for (const raw of md.split('\n')) {
+      const line = raw;
+      const trimmed = raw.trim();
+
+      if (trimmed.startsWith('## ')) {
+        section = trimmed.slice(3).trim().toLowerCase();
+        subSection = null; currentItem = null;
+        continue;
+      }
+      if (trimmed.startsWith('### ')) {
+        subSection = trimmed.slice(4).trim();
+        currentItem = null;
+        continue;
+      }
+      if (!trimmed || trimmed === '- *(none)*') continue;
+
+      if (section === 'basics') {
+        const m = trimmed.match(/^-\s+(\w+)::\s*(.*)/);
+        if (m) result.basics[m[1]] = m[2].trim();
+      }
+
+      else if (section === 'subjects') {
+        const propM = trimmed.match(/^-\s+(\w+)::\s*(.*)/);
+        if (propM && currentItem) {
+          if (propM[1] === 'teacher') currentItem.teacher = propM[2].trim();
+          if (propM[1] === 'color') currentItem.color = propM[2].trim();
+        } else if (/^-\s+/.test(trimmed) && !propM) {
+          const name = trimmed.slice(2).trim();
+          const color = SUBJECT_COLORS[result.subjects.length % SUBJECT_COLORS.length];
+          currentItem = { id: uid(), name, teacher: '', color };
+          result.subjects.push(currentItem);
+          subjByName[name.toLowerCase()] = currentItem.id;
+        }
+      }
+
+      else if (section === 'schedule') {
+        if (!subSection) continue;
+        const dayKey = DAY_ORDER.find(d => DAY_NAMES[d] === subSection);
+        if (!dayKey) continue;
+        // "- 9:00 AM — SubjectName (Room 12)"
+        const m = trimmed.match(/^-\s+(.+?)\s+—\s+(.+?)(?:\s+\(([^)]+)\))?$/);
+        if (!m) continue;
+        let timeStr = m[1].trim();
+        const t12 = timeStr.match(/^(\d{1,2}):(\d{2})\s*(AM|PM)$/i);
+        if (t12) {
+          let h = parseInt(t12[1]);
+          const min = t12[2], ap = t12[3].toUpperCase();
+          if (ap === 'PM' && h < 12) h += 12;
+          if (ap === 'AM' && h === 12) h = 0;
+          timeStr = `${String(h).padStart(2,'0')}:${min}`;
+        }
+        const subjId = resolveSubjId(m[2].trim());
+        if (subjId) result.schedule[dayKey].push({ id: uid(), time: timeStr, subjectId: subjId, room: m[3] || '' });
+      }
+
+      else if (section === 'homework') {
+        const propM = trimmed.match(/^-\s+(\w+)::\s*(.*)/);
+        if (propM && currentItem) {
+          const [, k, v] = propM;
+          if (k === 'subject') currentItem.subjectId = resolveSubjId(v.trim());
+          else if (k === 'due') currentItem.dueDate = v.trim();
+          else if (k === 'priority') currentItem.priority = v.trim();
+          else if (k === 'notes') currentItem.description = v.trim();
+        } else {
+          const m = trimmed.match(/^-\s+\[([ x])\]\s+(.*)/);
+          if (m) {
+            currentItem = { id: uid(), title: m[2].trim(), subjectId: '', dueDate: '', priority: 'med', description: '', completed: m[1] === 'x', createdAt: Date.now() };
+            result.homework.push(currentItem);
+          }
+        }
+      }
+
+      else if (section === 'topics') {
+        if (!subSection) continue;
+        const mk = subSection.split(' — ')[0].trim(); // "2026-05"
+        if (!result.topics[mk]) result.topics[mk] = [];
+        const m = trimmed.match(/^-\s+(.+?)\s+—\s+(.+)$/);
+        if (m) {
+          const subjId = resolveSubjId(m[1].trim());
+          if (subjId) result.topics[mk].push({ id: uid(), subjectId: subjId, text: m[2].trim() });
+        }
+      }
+
+      else if (section === 'reviews') {
+        if (!subSection) continue;
+        const ds = subSection.split(' — ')[0].trim(); // "2026-05-23"
+        if (!result.reviews[ds]) result.reviews[ds] = [];
+        const propM = trimmed.match(/^-\s+(\w+)::\s*(.*)/);
+        if (propM && currentItem) {
+          if (propM[1] === 'subject') currentItem.subjectId = resolveSubjId(propM[2].trim());
+        } else {
+          const m = trimmed.match(/^-\s+\[([ x])\]\s+(.*)/);
+          if (m) {
+            currentItem = { id: uid(), text: m[2].trim(), subjectId: '', completed: m[1] === 'x' };
+            result.reviews[ds].push(currentItem);
+          }
+        }
+      }
+    }
+
+    // Sort schedules
+    DAY_ORDER.forEach(d => result.schedule[d].sort((a, b) => a.time.localeCompare(b.time)));
+    return result;
+  }
+
+  async function importFromMarkdown(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    event.target.value = '';
+    const statusEl = $('importStatus');
+    statusEl.textContent = 'Reading file…';
+
+    const text = await file.text();
+    let imported;
+    try {
+      imported = parseMarkdownExport(text);
+    } catch (err) {
+      statusEl.textContent = `Parse error: ${err.message}`;
+      return;
+    }
+
+    const summary = [
+      `${imported.subjects.length} subject${imported.subjects.length !== 1 ? 's' : ''}`,
+      `${imported.homework.length} homework item${imported.homework.length !== 1 ? 's' : ''}`,
+      `${Object.values(imported.reviews).flat().length} review task${Object.values(imported.reviews).flat().length !== 1 ? 's' : ''}`
+    ].join(', ');
+
+    if (!confirm(`Import "${file.name}"?\n\n${summary}\n\nThis will replace all current data.`)) {
+      statusEl.textContent = 'Import cancelled.';
+      return;
+    }
+
+    Object.assign(state, imported);
+    await Promise.allSettled(Object.keys(BUCKETS).map(n => saveBucket(n)));
+    renderAll();
+    showToast('Imported!');
+    statusEl.textContent = `Imported: ${summary}`;
+  }
+
+  // ===== RESET =====
+  async function resetAll() {
+    if (!confirm('This wipes everything. Are you sure?')) return;
+    if (!confirm('Really sure? You can\'t undo this.')) return;
+    await deleteAllBuckets();
+    state = {
+      basics:   { name: '', grade: '6', semStart: '', semEnd: '' },
+      subjects: [],
+      schedule: { mon: [], tue: [], wed: [], thu: [], fri: [], sat: [] },
+      homework: [],
+      topics:   {},
+      reviews:  {},
+      hwFilter:     'all',
+      selectedDate: null,
+      weekOffset:   0
+    };
+    Object.keys(bucketStatus).forEach(k => { bucketStatus[k] = 'idle'; });
+    renderAll();
+    showToast('Reset complete');
+  }
+
+  // ===== RENDER ALL =====
+  function renderAll() {
+    renderBasics();
+    renderSubjects();
+    renderSchedule();
+    renderHwList();
+    renderAllReviews();
+    renderToday();
+    renderWeek();
+    renderMonthDropdown();
+    renderMonthList();
+    renderStorageStatus();
+  }
+
+  // ===== INIT =====
+  (async () => {
+    await loadState();
+    await migrateLegacy();   // one-time: moves old single-blob data into buckets
+
+    // Default the helper date to today
+    const hd = $('helperDate');
+    if (hd) hd.value = todayKey();
+    toggleHelperDate();
+
+    renderAll();
+    window.__plannerReady = true;
+  })();
+</script>
