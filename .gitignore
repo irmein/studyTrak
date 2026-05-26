@@ -1,3 +1,4 @@
 node_modules/
 test-results/
 6k_input.txt
+.DS_Store

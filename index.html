@@ -321,6 +321,50 @@
   }
   .class-item .del:hover { color: var(--accent); }
 
+  /* ===== ACTUALS ===== */
+  .class-item.cancelled { opacity: 0.55; }
+  .class-item.cancelled .name { text-decoration: line-through; }
+  .class-item.held {
+    background: #E8F0E8;
+    border-left-color: var(--c5);
+  }
+  .class-item.extra {
+    background: #FCEFE6;
+    border-style: dashed;
+    border-width: 1px;
+  }
+  .status-badge {
+    display: inline-block;
+    padding: 1px 7px;
+    border-radius: 10px;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 700;
+    margin-left: 6px;
+    vertical-align: middle;
+  }
+  .status-pending   { background: #EAE2CC; color: var(--ink-soft); }
+  .status-held      { background: #D9E5DC; color: #1F4A30; }
+  .status-cancelled { background: #F8D7CE; color: #8B2010; }
+  .status-extra     { background: #F2E3C3; color: #6B4A10; }
+
+  .class-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-top: 6px;
+  }
+  .class-actions .btn { padding: 3px 8px; font-size: 11px; letter-spacing: 0.3px; }
+  .class-note {
+    margin-top: 4px;
+    font-size: 12px;
+    color: var(--ink-soft);
+    font-style: italic;
+    border-top: 1px dashed var(--rule-soft);
+    padding-top: 4px;
+  }
+
   /* ===== HOMEWORK ===== */
   .hw-list { display: flex; flex-direction: column; gap: 10px; }
   .hw-item {
@@ -744,6 +788,190 @@
     .logo { font-size: 28px; }
     .panel-title { font-size: 24px; }
   }
+
+  /* ===== GEMMA / AI ===== */
+  .ai-btn {
+    font-size: 11px;
+    padding: 3px 9px;
+    background: linear-gradient(135deg, var(--gold), var(--accent));
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    font-family: 'Manrope', sans-serif;
+    white-space: nowrap;
+  }
+  .ai-btn:hover { filter: brightness(1.08); }
+  .ai-btn:disabled { opacity: 0.55; cursor: wait; filter: grayscale(0.4); }
+  body:not(.ai-enabled) .ai-btn { display: none; }
+  body:not(.ai-enabled) .ai-chat-toggle { display: none; }
+
+  .ai-panel {
+    background: linear-gradient(180deg, #fff7e8 0%, var(--paper-2) 100%);
+    border: 1px dashed var(--gold);
+    border-radius: 6px;
+    padding: 12px;
+    margin-top: 10px;
+    font-size: 14px;
+    line-height: 1.55;
+  }
+  .ai-panel.ai-error { border-color: var(--accent); color: var(--accent); background: #fde8e0; }
+  .ai-panel .ai-panel-h {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 13px;
+    color: var(--ink-soft);
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .ai-panel pre, .ai-panel code {
+    font-family: 'Manrope', sans-serif;
+    white-space: pre-wrap;
+    background: none;
+    padding: 0;
+  }
+
+  .ai-chat-toggle {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: var(--ink);
+    color: var(--paper);
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+    z-index: 100;
+    transition: transform 0.15s;
+  }
+  .ai-chat-toggle:hover { transform: scale(1.06); }
+
+  .ai-chat-panel {
+    position: fixed;
+    bottom: 90px;
+    right: 24px;
+    width: 380px;
+    max-width: calc(100vw - 48px);
+    height: 540px;
+    max-height: calc(100vh - 130px);
+    background: var(--paper);
+    border: 2px solid var(--ink);
+    border-radius: 10px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+    display: none;
+    flex-direction: column;
+    z-index: 100;
+  }
+  .ai-chat-panel.open { display: flex; }
+  .ai-chat-head {
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--rule);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 16px;
+  }
+  .ai-chat-head em { color: var(--accent); font-weight: 500; }
+  .ai-chat-head-btns { display: flex; gap: 6px; }
+  .ai-chat-head-btns button {
+    background: none;
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    padding: 3px 8px;
+    cursor: pointer;
+    font-size: 12px;
+    color: var(--ink-soft);
+  }
+  .ai-chat-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 14px;
+  }
+  .ai-chat-empty {
+    color: var(--ink-faint);
+    font-style: italic;
+    font-size: 13px;
+    text-align: center;
+    padding: 30px 14px;
+    line-height: 1.5;
+  }
+  .ai-chat-msg { margin-bottom: 12px; }
+  .ai-chat-role {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    color: var(--ink-faint);
+    font-weight: 700;
+    margin-bottom: 3px;
+  }
+  .ai-chat-user { text-align: right; }
+  .ai-chat-user .ai-chat-text {
+    background: var(--ink);
+    color: var(--paper);
+    display: inline-block;
+    padding: 8px 12px;
+    border-radius: 14px 14px 4px 14px;
+    text-align: left;
+    max-width: 85%;
+    font-size: 14px;
+  }
+  .ai-chat-assistant .ai-chat-text {
+    background: var(--paper-2);
+    display: inline-block;
+    padding: 8px 12px;
+    border-radius: 14px 14px 14px 4px;
+    max-width: 90%;
+    font-size: 14px;
+  }
+  .ai-chat-msg.ai-error .ai-chat-text { background: #fde8e0; color: var(--accent); }
+  .ai-chat-busy .ai-chat-text { font-style: italic; opacity: 0.7; }
+  .ai-chat-foot {
+    padding: 10px;
+    border-top: 1px solid var(--rule);
+    display: flex;
+    gap: 6px;
+  }
+  .ai-chat-foot input {
+    flex: 1;
+    padding: 8px 10px;
+    border: 1px solid var(--rule);
+    border-radius: 6px;
+    font: inherit;
+    background: #fff;
+  }
+
+  .ai-toggle-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 8px;
+  }
+  .ai-toggle-row input[type=checkbox] { width: 18px; height: 18px; }
+  .ai-help {
+    font-size: 12px;
+    color: var(--ink-soft);
+    background: var(--paper-2);
+    padding: 10px 12px;
+    border-radius: 6px;
+    margin-top: 10px;
+    line-height: 1.55;
+  }
+  .ai-help code {
+    background: var(--paper);
+    padding: 1px 5px;
+    border-radius: 3px;
+    font-family: ui-monospace, monospace;
+    font-size: 11.5px;
+  }
 </style>
 
 <div class="app">
@@ -811,6 +1039,7 @@
     <div class="card" style="margin-top:20px">
       <div class="card-h"><span class="marker"></span><span id="todayReviewsHeading">Review Tasks</span></div>
       <div id="todayReviews"></div>
+      <div id="aiReviewDraftPanel"></div>
       <div style="display:flex;gap:8px;margin-top:12px;align-items:flex-end;flex-wrap:wrap">
         <div style="flex:2;min-width:180px">
           <label>Task</label>
@@ -821,6 +1050,7 @@
           <select id="reviewSubject"></select>
         </div>
         <button class="btn accent" onclick="addReviewTask()">Add</button>
+        <button class="ai-btn" onclick="aiDraftReviews()" title="Let Gemma draft review tasks">✨ Draft with Gemma</button>
       </div>
     </div>
   </section>
@@ -1051,6 +1281,40 @@ Tue 8:30 Science (Rm 7)
       <div class="schedule-grid" id="scheduleGrid"></div>
     </div>
 
+    <!-- Gemma (Ollama) settings -->
+    <div class="card">
+      <div class="card-h"><span class="marker"></span>Gemma (local AI via Ollama)</div>
+      <p style="color:var(--ink-soft);font-size:13px;margin-bottom:14px">
+        Run Gemma locally for AI-powered homework breakdowns, topic explanations, review drafts, and a chat assistant. Your data never leaves your computer.
+      </p>
+      <div class="form-row">
+        <div style="flex:2">
+          <label>Ollama URL</label>
+          <input type="text" id="aiOllamaUrl" placeholder="http://localhost:11434" />
+        </div>
+        <div style="flex:1">
+          <label>Model</label>
+          <input type="text" id="aiModel" placeholder="gemma2:2b" />
+        </div>
+      </div>
+      <div class="ai-toggle-row">
+        <input type="checkbox" id="aiEnabled" />
+        <label for="aiEnabled" style="margin:0;cursor:pointer">Enable Gemma features</label>
+      </div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px">
+        <button class="btn accent" onclick="saveAiSettings()">Save</button>
+        <button class="btn" onclick="aiTestConnection()">Test connection</button>
+      </div>
+      <div id="aiTestStatus" style="margin-top:10px;font-size:13px;font-style:italic;color:var(--ink-soft)"></div>
+      <div class="ai-help">
+        <strong>Setup:</strong>
+        1. Install <a href="https://ollama.com" target="_blank" rel="noopener">Ollama</a>.
+        2. Pull a model: <code>ollama pull gemma2:2b</code> (small) or <code>ollama pull gemma2:9b</code> (better but heavier).
+        3. Allow this page through CORS — start Ollama with <code>OLLAMA_ORIGINS="*" ollama serve</code>, or on macOS run <code>launchctl setenv OLLAMA_ORIGINS "*"</code> then restart the Ollama app.
+        4. Toggle "Enable Gemma features" above, then look for the ✨ buttons throughout the app and the chat bubble in the bottom right.
+      </div>
+    </div>
+
     <div class="card">
       <div class="card-h"><span class="marker"></span>Storage buckets</div>
       <p style="color:var(--ink-soft);font-size:13px;margin-bottom:14px">
@@ -1122,6 +1386,78 @@ Tue 8:30 Science (Rm 7)
   </div>
 </div>
 
+<!-- Subject Edit Modal -->
+<div class="modal-bg" id="subjModalBg" onclick="if(event.target===this) closeSubjModal()">
+  <div class="modal">
+    <div class="modal-h">Edit subject</div>
+    <input type="hidden" id="subjModalId" />
+    <div class="form-row">
+      <div style="flex:2">
+        <label>Subject name</label>
+        <input type="text" id="subjModalName" placeholder="e.g. Math" />
+      </div>
+    </div>
+    <div class="form-row">
+      <div>
+        <label>Teacher (optional)</label>
+        <input type="text" id="subjModalTeacher" placeholder="Ms. Smith" />
+      </div>
+    </div>
+    <div>
+      <label>Color</label>
+      <div id="subjModalColors" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:4px"></div>
+    </div>
+    <div style="display:flex; gap:10px; margin-top:18px; justify-content:flex-end">
+      <button class="btn secondary" onclick="closeSubjModal()">Cancel</button>
+      <button class="btn accent" onclick="saveSubjEdit()">Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- Class Actual Modal -->
+<div class="modal-bg" id="actualModalBg" onclick="if(event.target===this) closeActualModal()">
+  <div class="modal">
+    <div class="modal-h" id="actualModalTitle">Edit class</div>
+    <input type="hidden" id="actualModalDate" />
+    <input type="hidden" id="actualModalActualId" />
+    <input type="hidden" id="actualModalScheduleId" />
+    <div class="form-row">
+      <div>
+        <label>Time</label>
+        <input type="time" id="actualModalTime" />
+      </div>
+      <div>
+        <label>Subject</label>
+        <select id="actualModalSubject"></select>
+      </div>
+      <div>
+        <label>Room (optional)</label>
+        <input type="text" id="actualModalRoom" placeholder="Rm 12" />
+      </div>
+    </div>
+    <div class="form-row">
+      <div>
+        <label>Status</label>
+        <select id="actualModalStatus">
+          <option value="held">Held</option>
+          <option value="cancelled">Cancelled</option>
+        </select>
+      </div>
+    </div>
+    <div>
+      <label>Note (optional)</label>
+      <textarea id="actualModalNote" placeholder="Quiz day, substitute teacher, swapped with another period…"></textarea>
+    </div>
+    <div style="display:flex; gap:10px; margin-top:18px; justify-content:space-between; align-items:center; flex-wrap:wrap">
+      <button class="btn ghost" id="actualModalResetBtn" onclick="resetActualFromModal()" style="display:none">Reset to scheduled</button>
+      <div style="display:flex;gap:10px;margin-left:auto">
+        <button class="btn secondary" onclick="closeActualModal()">Cancel</button>
+        <button class="btn accent" onclick="saveActualFromModal()">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- Review Task Modal -->
 <div class="modal-bg" id="reviewModalBg" onclick="if(event.target===this) closeReviewModal()">
   <div class="modal">
@@ -1151,6 +1487,23 @@ Tue 8:30 Science (Rm 7)
   </div>
 </div>
 
+<!-- Gemma chat sidebar -->
+<button class="ai-chat-toggle" id="aiChatToggle" onclick="aiChatToggle()" title="Study chat (Gemma)">✨</button>
+<div class="ai-chat-panel" id="aiChatPanel">
+  <div class="ai-chat-head">
+    <div>Study chat<em> · Gemma</em></div>
+    <div class="ai-chat-head-btns">
+      <button onclick="aiChatClear()" title="Clear history">Clear</button>
+      <button onclick="aiChatToggle()" title="Close">×</button>
+    </div>
+  </div>
+  <div class="ai-chat-body" id="aiChatBody"></div>
+  <div class="ai-chat-foot">
+    <input type="text" id="aiChatInput" placeholder="Ask Gemma about your study…" onkeydown="if(event.key==='Enter')aiChatSend()" />
+    <button class="btn accent small" onclick="aiChatSend()">Send</button>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <script>
@@ -1162,6 +1515,9 @@ Tue 8:30 Science (Rm 7)
     homework: [],
     topics: {},
     reviews: {},           // { "YYYY-MM-DD": [ { id, text, subjectId, completed } ] }
+    actuals: {},           // { "YYYY-MM-DD": [ { id, scheduleId?, time, subjectId, room, status, note } ] }
+                           //   status: 'held' | 'cancelled' | 'extra'  (extra = ad-hoc, not on regular schedule)
+    ai: { ollamaUrl: 'http://localhost:11434', model: 'gemma2:2b', enabled: false },
     hwFilter: 'all',
     selectedDate: null,   // ISO date string for the "Today" panel; null = real today
     weekOffset: 0          // 0 = current week, -1 = last week, +1 = next week, etc.
@@ -1181,11 +1537,13 @@ Tue 8:30 Science (Rm 7)
     schedule: 'planner-schedule',
     homework: 'planner-homework',
     topics:   'planner-topics',
-    reviews:  'planner-reviews'
+    reviews:  'planner-reviews',
+    actuals:  'planner-actuals',
+    ai:       'planner-ai'
   };
 
   // Status map: 'idle' | 'saving' | 'saved' | 'error'
-  const bucketStatus = { basics: 'idle', subjects: 'idle', schedule: 'idle', homework: 'idle', topics: 'idle', reviews: 'idle' };
+  const bucketStatus = { basics: 'idle', subjects: 'idle', schedule: 'idle', homework: 'idle', topics: 'idle', reviews: 'idle', actuals: 'idle', ai: 'idle' };
 
   // Storage wrapper: prefers window.storage (Claude Code runtime), falls back to localStorage
   const store = {
@@ -1278,7 +1636,7 @@ Tue 8:30 Science (Rm 7)
     if (!el) return;
     const icons = { idle: '○', saving: '◌', saved: '●', error: '✕' };
     const colors = { idle: 'var(--ink-faint)', saving: 'var(--gold)', saved: 'var(--teal)', error: 'var(--accent)' };
-    const labels = { basics: 'Basics', subjects: 'Subjects', schedule: 'Schedule', homework: 'Homework', topics: 'Topics', reviews: 'Reviews' };
+    const labels = { basics: 'Basics', subjects: 'Subjects', schedule: 'Schedule', homework: 'Homework', topics: 'Topics', reviews: 'Reviews', actuals: 'Actuals', ai: 'Gemma' };
     el.innerHTML = Object.entries(bucketStatus).map(([name, status]) => {
       const size = (() => {
         try { return (JSON.stringify(state[name]).length / 1024).toFixed(1) + ' KB'; }
@@ -1350,6 +1708,335 @@ Tue 8:30 Science (Rm 7)
     });
   });
 
+  // ===== GEMMA / AI =====
+  const AI_DEFAULTS = { ollamaUrl: 'http://localhost:11434', model: 'gemma2:2b', enabled: false };
+
+  function aiCfg() { return Object.assign({}, AI_DEFAULTS, state.ai || {}); }
+
+  async function aiGenerate(systemPrompt, userPrompt) {
+    const cfg = aiCfg();
+    if (!cfg.enabled) throw new Error('Enable Gemma in Setup first');
+    const url = cfg.ollamaUrl.replace(/\/$/, '') + '/api/chat';
+    const r = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: cfg.model,
+        messages: [
+          { role: 'system', content: systemPrompt },
+          { role: 'user', content: userPrompt }
+        ],
+        stream: false
+      })
+    });
+    if (!r.ok) {
+      let msg = `Ollama returned ${r.status}`;
+      try { const j = await r.json(); if (j.error) msg += `: ${j.error}`; } catch (_) {}
+      throw new Error(msg);
+    }
+    const j = await r.json();
+    return (j.message && j.message.content) || '';
+  }
+
+  async function aiTestConnection() {
+    const cfg = aiCfg();
+    const status = $('aiTestStatus');
+    status.textContent = 'Testing…';
+    status.style.color = 'var(--ink-soft)';
+    try {
+      const r = await fetch(cfg.ollamaUrl.replace(/\/$/, '') + '/api/tags');
+      if (!r.ok) throw new Error(`HTTP ${r.status}`);
+      const j = await r.json();
+      const models = (j.models || []).map(m => m.name);
+      const has = models.some(n => n === cfg.model || n.split(':')[0] === cfg.model.split(':')[0]);
+      status.textContent = `✓ Connected. ${models.length} model${models.length!==1?'s':''} installed${has ? ` — "${cfg.model}" found.` : ` — "${cfg.model}" not pulled. Run: ollama pull ${cfg.model}`}`;
+      status.style.color = has ? 'var(--teal)' : 'var(--gold)';
+    } catch (e) {
+      status.textContent = `✗ ${e.message}. Make sure Ollama is running (ollama serve) and CORS is allowed (OLLAMA_ORIGINS="*").`;
+      status.style.color = 'var(--accent)';
+    }
+  }
+
+  function saveAiSettings() {
+    const cfg = aiCfg();
+    cfg.ollamaUrl = ($('aiOllamaUrl').value || '').trim() || AI_DEFAULTS.ollamaUrl;
+    cfg.model = ($('aiModel').value || '').trim() || AI_DEFAULTS.model;
+    cfg.enabled = !!$('aiEnabled').checked;
+    state.ai = cfg;
+    saveBucket('ai');
+    renderAi();
+    showToast('Gemma settings saved');
+  }
+
+  function renderAi() {
+    const cfg = aiCfg();
+    if ($('aiOllamaUrl')) $('aiOllamaUrl').value = cfg.ollamaUrl;
+    if ($('aiModel')) $('aiModel').value = cfg.model;
+    if ($('aiEnabled')) $('aiEnabled').checked = !!cfg.enabled;
+    document.body.classList.toggle('ai-enabled', !!cfg.enabled);
+  }
+
+  // ----- Homework breakdown -----
+  const _aiBreakdowns = {}; // hwId -> { loading, text, error }
+
+  async function aiBreakdownHw(hwId) {
+    const h = state.homework.find(x => x.id === hwId);
+    if (!h) return;
+    _aiBreakdowns[hwId] = { loading: true };
+    renderHwList();
+    try {
+      const subj = getSubject(h.subjectId);
+      const grade = state.basics.grade || '6';
+      const sys = `You are a friendly study coach for a grade ${grade} student. Break the homework into 3 to 6 short, concrete steps a student can check off. Output ONLY a markdown checklist (one "- [ ] step" per line). No preamble, no closing remarks, no headings.`;
+      const usr = `Subject: ${subj ? subj.name : 'general'}\nAssignment: ${h.title}${h.description ? '\nNotes: ' + h.description : ''}${h.dueDate ? '\nDue: ' + h.dueDate : ''}`;
+      const text = await aiGenerate(sys, usr);
+      _aiBreakdowns[hwId] = { text: text.trim() };
+    } catch (e) {
+      _aiBreakdowns[hwId] = { error: e.message };
+    }
+    renderHwList();
+  }
+  function aiBreakdownSave(hwId) {
+    const b = _aiBreakdowns[hwId];
+    const h = state.homework.find(x => x.id === hwId);
+    if (!h || !b || !b.text) return;
+    h.description = (h.description ? h.description + '\n\n' : '') + b.text;
+    saveBucket('homework');
+    delete _aiBreakdowns[hwId];
+    renderHwList();
+    showToast('Saved breakdown to notes');
+  }
+  function aiBreakdownDismiss(hwId) {
+    delete _aiBreakdowns[hwId];
+    renderHwList();
+  }
+  function aiBreakdownPanelHtml(hwId) {
+    const b = _aiBreakdowns[hwId];
+    if (!b) return '';
+    if (b.loading) return `<div class="ai-panel"><div class="ai-panel-h">✨ Gemma is thinking…</div></div>`;
+    if (b.error) return `<div class="ai-panel ai-error"><div class="ai-panel-h">✨ Error <button class="btn ghost" onclick="aiBreakdownDismiss('${hwId}')">×</button></div>${escapeHtml(b.error)}</div>`;
+    return `<div class="ai-panel">
+      <div class="ai-panel-h">✨ Suggested breakdown
+        <span>
+          <button class="btn ghost" onclick="aiBreakdownHw('${hwId}')">Regenerate</button>
+          <button class="btn ghost" onclick="aiBreakdownSave('${hwId}')">Save to notes</button>
+          <button class="btn ghost" onclick="aiBreakdownDismiss('${hwId}')">Dismiss</button>
+        </span>
+      </div>
+      <pre>${escapeHtml(b.text)}</pre>
+    </div>`;
+  }
+
+  // ----- Topic explainer -----
+  const _aiTopicExplains = {}; // topicId -> { loading, text, error }
+
+  async function aiExplainTopic(monthKey, topicId) {
+    const t = (state.topics[monthKey] || []).find(x => x.id === topicId);
+    if (!t) return;
+    _aiTopicExplains[topicId] = { loading: true };
+    renderMonthList();
+    try {
+      const subj = getSubject(t.subjectId);
+      const grade = state.basics.grade || '6';
+      const sys = `You are a patient teacher explaining concepts to a grade ${grade} student. Give a short, clear, friendly explanation in 3 to 5 sentences. Use simple language and one concrete example. Plain prose — no headings, no bullet points.`;
+      const usr = `Subject: ${subj ? subj.name : 'general'}\nTopic: ${t.text}`;
+      const text = await aiGenerate(sys, usr);
+      _aiTopicExplains[topicId] = { text: text.trim() };
+    } catch (e) {
+      _aiTopicExplains[topicId] = { error: e.message };
+    }
+    renderMonthList();
+  }
+  function aiExplainTopicDismiss(topicId) {
+    delete _aiTopicExplains[topicId];
+    renderMonthList();
+  }
+  function aiTopicPanelHtml(topicId) {
+    const b = _aiTopicExplains[topicId];
+    if (!b) return '';
+    if (b.loading) return `<div class="ai-panel"><div class="ai-panel-h">✨ Gemma is thinking…</div></div>`;
+    if (b.error) return `<div class="ai-panel ai-error"><div class="ai-panel-h">✨ Error <button class="btn ghost" onclick="aiExplainTopicDismiss('${topicId}')">×</button></div>${escapeHtml(b.error)}</div>`;
+    return `<div class="ai-panel">
+      <div class="ai-panel-h">✨ Explanation <button class="btn ghost" onclick="aiExplainTopicDismiss('${topicId}')">×</button></div>
+      ${escapeHtml(b.text).replace(/\n/g,'<br>')}
+    </div>`;
+  }
+
+  // ----- Daily review draft -----
+  let _aiReviewDraft = null; // { loading, error, items: [{text,subjectId,selected}] }
+
+  async function aiDraftReviews() {
+    const selected = getSelectedDate();
+    const dow = dayOfWeek(selected);
+    const classes = (state.schedule[dow] || []).map(c => {
+      const s = getSubject(c.subjectId);
+      return s ? s.name : null;
+    }).filter(Boolean);
+    const openHw = state.homework.filter(h => !h.completed).slice(0, 8).map(h => {
+      const s = getSubject(h.subjectId);
+      return `${h.title}${s ? ` [${s.name}]` : ''}${h.dueDate ? ` due ${h.dueDate}` : ''}`;
+    });
+    _aiReviewDraft = { loading: true };
+    renderReviewDraft();
+    try {
+      const grade = state.basics.grade || '6';
+      const subjectNames = state.subjects.map(s => s.name).join(', ') || 'none';
+      const sys = `You are a study coach for a grade ${grade} student. Suggest 3 to 5 short review tasks for the evening based on the day's classes and open homework. Output ONLY a JSON array (no preamble, no fences). Each item: {"text":"...","subject":"..."}. The "subject" must be one of: ${subjectNames}, or "" if general. Keep "text" under 12 words and action-oriented (e.g. "Re-read Ch. 3 notes on fractions").`;
+      const usr = `Day: ${selected.toLocaleDateString(undefined,{weekday:'long'})}\nClasses today: ${classes.join(', ') || 'none'}\nOpen homework:\n${openHw.join('\n') || 'none'}`;
+      const text = await aiGenerate(sys, usr);
+      let items = [];
+      try {
+        const m = text.match(/\[[\s\S]*\]/);
+        const arr = JSON.parse(m ? m[0] : text);
+        items = arr.map(o => ({
+          text: (o.text || '').trim(),
+          subjectId: (state.subjects.find(s => s.name.toLowerCase() === (o.subject||'').toLowerCase()) || {}).id || '',
+          selected: true
+        })).filter(x => x.text);
+      } catch (_) {
+        items = text.split('\n').map(l => l.replace(/^[-•*\d.)\s]+/, '').trim()).filter(Boolean).slice(0, 5).map(line => ({
+          text: line, subjectId: '', selected: true
+        }));
+      }
+      if (!items.length) throw new Error('No usable suggestions returned');
+      _aiReviewDraft = { items };
+    } catch (e) {
+      _aiReviewDraft = { error: e.message };
+    }
+    renderReviewDraft();
+  }
+
+  function renderReviewDraft() {
+    const host = $('aiReviewDraftPanel');
+    if (!host) return;
+    if (!_aiReviewDraft) { host.innerHTML = ''; return; }
+    if (_aiReviewDraft.loading) {
+      host.innerHTML = `<div class="ai-panel"><div class="ai-panel-h">✨ Drafting review tasks…</div></div>`;
+      return;
+    }
+    if (_aiReviewDraft.error) {
+      host.innerHTML = `<div class="ai-panel ai-error"><div class="ai-panel-h">✨ Error <button class="btn ghost" onclick="aiReviewDraftDismiss()">×</button></div>${escapeHtml(_aiReviewDraft.error)}</div>`;
+      return;
+    }
+    const items = _aiReviewDraft.items || [];
+    host.innerHTML = `<div class="ai-panel">
+      <div class="ai-panel-h">✨ Suggested review tasks
+        <span>
+          <button class="btn ghost" onclick="aiDraftReviews()">Regenerate</button>
+          <button class="btn ghost" onclick="aiReviewDraftDismiss()">Dismiss</button>
+        </span>
+      </div>
+      ${items.map((it, i) => `
+        <label style="display:flex;gap:10px;align-items:center;padding:5px 0;cursor:pointer">
+          <input type="checkbox" ${it.selected ? 'checked' : ''} onchange="_aiReviewDraft.items[${i}].selected = this.checked">
+          <span>${escapeHtml(it.text)}${it.subjectId ? ` <em style="color:var(--ink-faint);font-size:12px">— ${escapeHtml(subjectName(it.subjectId))}</em>` : ''}</span>
+        </label>
+      `).join('')}
+      <div style="margin-top:10px"><button class="btn accent small" onclick="aiReviewDraftAccept()">Add selected to today</button></div>
+    </div>`;
+  }
+  function aiReviewDraftAccept() {
+    if (!_aiReviewDraft || !_aiReviewDraft.items) return;
+    const selected = getSelectedDate();
+    const selectedStr = dateKey(selected);
+    if (!state.reviews[selectedStr]) state.reviews[selectedStr] = [];
+    let added = 0;
+    for (const it of _aiReviewDraft.items) {
+      if (!it.selected) continue;
+      state.reviews[selectedStr].push({ id: uid(), text: it.text, subjectId: it.subjectId || '', completed: false });
+      added++;
+    }
+    saveBucket('reviews');
+    _aiReviewDraft = null;
+    renderToday();
+    renderWeek && renderWeek();
+    renderAllReviews && renderAllReviews();
+    showToast(`Added ${added} review task${added !== 1 ? 's' : ''}`);
+  }
+  function aiReviewDraftDismiss() {
+    _aiReviewDraft = null;
+    renderReviewDraft();
+  }
+
+  // ----- Study chat sidebar -----
+  let _aiChatHistory = []; // session only
+  let _aiChatBusy = false;
+
+  function aiChatToggle() {
+    const el = $('aiChatPanel');
+    el.classList.toggle('open');
+    if (el.classList.contains('open')) {
+      renderAiChat();
+      setTimeout(() => { const i = $('aiChatInput'); if (i) i.focus(); }, 50);
+    }
+  }
+  function aiChatClear() {
+    _aiChatHistory = [];
+    renderAiChat();
+  }
+  function aiChatContext() {
+    const grade = state.basics.grade || '6';
+    const name = state.basics.name || 'a student';
+    const subjs = state.subjects.map(s => s.name).join(', ') || 'none yet';
+    const dow = dayOfWeek(new Date());
+    const todayClasses = (state.schedule[dow] || []).map(c => {
+      const s = getSubject(c.subjectId);
+      return `${fmtTime(c.time)} ${s ? s.name : ''}`.trim();
+    }).join(', ') || 'none';
+    const openHw = state.homework.filter(h => !h.completed).length;
+    return `You are a friendly, encouraging study assistant for ${name} (grade ${grade}). Their subjects: ${subjs}. Today's classes: ${todayClasses}. Open homework count: ${openHw}. Keep responses short and grade-appropriate. Plain prose, no markdown unless asked.`;
+  }
+  async function aiChatSend() {
+    if (_aiChatBusy) return;
+    const input = $('aiChatInput');
+    const text = (input.value || '').trim();
+    if (!text) return;
+    input.value = '';
+    _aiChatHistory.push({ role: 'user', content: text });
+    _aiChatBusy = true;
+    renderAiChat();
+    try {
+      const cfg = aiCfg();
+      if (!cfg.enabled) throw new Error('Enable Gemma in Setup first');
+      const r = await fetch(cfg.ollamaUrl.replace(/\/$/, '') + '/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          model: cfg.model,
+          messages: [ { role: 'system', content: aiChatContext() }, ..._aiChatHistory ],
+          stream: false
+        })
+      });
+      if (!r.ok) throw new Error(`Ollama returned ${r.status}`);
+      const j = await r.json();
+      _aiChatHistory.push({ role: 'assistant', content: (j.message && j.message.content) || '(no response)' });
+    } catch (e) {
+      _aiChatHistory.push({ role: 'assistant', content: e.message, error: true });
+    }
+    _aiChatBusy = false;
+    renderAiChat();
+  }
+  function renderAiChat() {
+    const body = $('aiChatBody');
+    if (!body) return;
+    let html = '';
+    if (_aiChatHistory.length === 0 && !_aiChatBusy) {
+      html = `<div class="ai-chat-empty">Ask Gemma anything about your subjects, homework, or study habits. The assistant knows your current schedule and open work.</div>`;
+    } else {
+      html = _aiChatHistory.map(m => `
+        <div class="ai-chat-msg ai-chat-${m.role}${m.error ? ' ai-error' : ''}">
+          <div class="ai-chat-role">${m.role === 'user' ? 'You' : 'Gemma'}</div>
+          <div class="ai-chat-text">${escapeHtml(m.content).replace(/\n/g,'<br>')}</div>
+        </div>
+      `).join('');
+    }
+    if (_aiChatBusy) {
+      html += `<div class="ai-chat-msg ai-chat-assistant ai-chat-busy"><div class="ai-chat-role">Gemma</div><div class="ai-chat-text">…thinking</div></div>`;
+    }
+    body.innerHTML = html;
+    body.scrollTop = body.scrollHeight;
+  }
+
   // ===== BASICS =====
   function saveBasics() {
     state.basics.name = $('studentName').value.trim();
@@ -1394,13 +2081,67 @@ Tue 8:30 Science (Rm 7)
     for (const dateKey in state.reviews) {
       (state.reviews[dateKey] || []).forEach(r => { if (r.subjectId === id) r.subjectId = ''; });
     }
+    // Also clean actuals: drop entries whose subject was deleted (these are time-stamped
+    // historical records — there is no sensible fallback subject).
+    for (const dateKey in state.actuals) {
+      state.actuals[dateKey] = (state.actuals[dateKey] || []).filter(a => a.subjectId !== id);
+      if (state.actuals[dateKey].length === 0) delete state.actuals[dateKey];
+    }
     saveBucket('subjects');
     saveBucket('schedule');
     saveBucket('homework');
     saveBucket('topics');
     saveBucket('reviews');
+    saveBucket('actuals');
     renderAll();
   }
+
+  // ===== SUBJECT EDIT MODAL =====
+  let _subjModalColor = SUBJECT_COLORS[0];
+
+  function openSubjModal(id) {
+    const s = state.subjects.find(x => x.id === id);
+    if (!s) return;
+    $('subjModalId').value = s.id;
+    $('subjModalName').value = s.name || '';
+    $('subjModalTeacher').value = s.teacher || '';
+    _subjModalColor = s.color || SUBJECT_COLORS[0];
+    renderSubjModalColors();
+    $('subjModalBg').classList.add('show');
+    setTimeout(() => { const n = $('subjModalName'); if (n) n.focus(); }, 50);
+  }
+  function closeSubjModal() { $('subjModalBg').classList.remove('show'); }
+
+  function renderSubjModalColors() {
+    const el = $('subjModalColors');
+    if (!el) return;
+    el.innerHTML = SUBJECT_COLORS.map(c => `
+      <span onclick="pickSubjModalColor('${c}')"
+            style="display:inline-block;width:28px;height:28px;border-radius:50%;cursor:pointer;background:${c};
+                   border:3px solid ${c === _subjModalColor ? 'var(--ink)' : 'transparent'};
+                   box-shadow:0 0 0 1px var(--rule);transition:border-color .15s"
+            title="${c}"></span>
+    `).join('');
+  }
+  function pickSubjModalColor(c) {
+    _subjModalColor = c;
+    renderSubjModalColors();
+  }
+  function saveSubjEdit() {
+    const id = $('subjModalId').value;
+    const s = state.subjects.find(x => x.id === id);
+    if (!s) { closeSubjModal(); return; }
+    const newName = $('subjModalName').value.trim();
+    if (!newName) { showToast('Name required'); return; }
+    s.name = newName;
+    s.teacher = $('subjModalTeacher').value.trim();
+    s.color = _subjModalColor;
+    saveBucket('subjects');
+    renderAll();
+    closeSubjModal();
+    showToast('Subject updated');
+  }
+
   function renderSubjects() {
     const list = $('subjectList');
     if (state.subjects.length === 0) {
@@ -1409,21 +2150,22 @@ Tue 8:30 Science (Rm 7)
       list.innerHTML = state.subjects.map(s => `
         <div class="subject-chip">
           <span class="swatch" style="background:${s.color}"></span>
-          ${s.name}${s.teacher ? ` <span style="color:var(--ink-faint);font-weight:400">· ${s.teacher}</span>` : ''}
-          <span class="x" onclick="removeSubject('${s.id}')">×</span>
+          ${escapeHtml(s.name)}${s.teacher ? ` <span style="color:var(--ink-faint);font-weight:400">· ${escapeHtml(s.teacher)}</span>` : ''}
+          <span class="x" onclick="openSubjModal('${s.id}')" title="Edit" style="color:var(--ink-soft);font-size:13px;font-weight:600">✎</span>
+          <span class="x" onclick="removeSubject('${s.id}')" title="Remove">×</span>
         </div>
       `).join('');
     }
 
     // Populate dropdowns
     const opts = '<option value="">— Select a subject —</option>' +
-      state.subjects.map(s => `<option value="${s.id}">${s.name}</option>`).join('');
-    ['classSubject','hwSubject','topicSubject'].forEach(id => {
+      state.subjects.map(s => `<option value="${s.id}">${escapeHtml(s.name)}</option>`).join('');
+    ['classSubject','hwSubject','topicSubject','actualModalSubject'].forEach(id => {
       const el = $(id);
       if (el) { const prev = el.value; el.innerHTML = opts; el.value = prev; }
     });
     const anyOpts = '<option value="">— Any —</option>' +
-      state.subjects.map(s => `<option value="${s.id}">${s.name}</option>`).join('');
+      state.subjects.map(s => `<option value="${s.id}">${escapeHtml(s.name)}</option>`).join('');
     ['helperSubject','reviewSubject','reviewModalSubject'].forEach(id => {
       const el = $(id);
       if (el) { const prev = el.value; el.innerHTML = anyOpts; el.value = prev; }
@@ -1451,6 +2193,232 @@ Tue 8:30 Science (Rm 7)
     saveBucket('schedule');
     renderAll();
   }
+
+  // ===== ACTUALS (per-day overrides of the regular schedule) =====
+  // Each day's actuals[] entry has:
+  //   { id, scheduleId?, time, subjectId, room, status, note }
+  // - scheduleId set → it overrides that scheduled class (status: 'held' | 'cancelled')
+  // - no scheduleId   → ad-hoc / extra class (status: 'extra')
+
+  // Merge a day's schedule + actuals into one ordered list of "what happened".
+  // Returned items: { kind: 'scheduled' | 'overridden' | 'extra',
+  //                   schedClass?, actual?, time, subjectId, room, status }
+  function getMergedDayClasses(dateStr, dow) {
+    const sched = state.schedule[dow] || [];
+    const actuals = state.actuals[dateStr] || [];
+    const usedActualIds = new Set();
+    const items = [];
+
+    for (const sc of sched) {
+      const a = actuals.find(x => x.scheduleId === sc.id);
+      if (a) {
+        usedActualIds.add(a.id);
+        items.push({
+          kind: 'overridden',
+          schedClass: sc,
+          actual: a,
+          time: a.time || sc.time,
+          subjectId: a.subjectId || sc.subjectId,
+          room: a.room != null ? a.room : sc.room,
+          status: a.status
+        });
+      } else {
+        items.push({
+          kind: 'scheduled',
+          schedClass: sc,
+          actual: null,
+          time: sc.time,
+          subjectId: sc.subjectId,
+          room: sc.room,
+          status: 'pending'
+        });
+      }
+    }
+    // Append extras (no scheduleId, or scheduleId no longer matches a scheduled class)
+    for (const a of actuals) {
+      if (usedActualIds.has(a.id)) continue;
+      items.push({
+        kind: 'extra',
+        schedClass: null,
+        actual: a,
+        time: a.time,
+        subjectId: a.subjectId,
+        room: a.room,
+        status: a.status || 'extra'
+      });
+    }
+    items.sort((x, y) => (x.time || '').localeCompare(y.time || ''));
+    return items;
+  }
+
+  // Quick status toggle from a chip in the Today panel.
+  // For a scheduled class: create/update actual with the new status.
+  // For an extra class: just update its status (extras can be 'held' or 'cancelled' too).
+  function setClassStatus(dateStr, scheduleId, actualId, newStatus) {
+    if (!state.actuals[dateStr]) state.actuals[dateStr] = [];
+    const list = state.actuals[dateStr];
+
+    if (actualId) {
+      const a = list.find(x => x.id === actualId);
+      if (a) a.status = newStatus;
+    } else if (scheduleId) {
+      // Find or create an actual that overrides this scheduled class
+      let a = list.find(x => x.scheduleId === scheduleId);
+      if (a) {
+        a.status = newStatus;
+      } else {
+        // Snapshot the scheduled fields so a later schedule edit doesn't silently mutate history
+        const dow = dayOfWeek(new Date(dateStr + 'T00:00:00'));
+        const sc = (state.schedule[dow] || []).find(c => c.id === scheduleId);
+        if (!sc) return;
+        list.push({
+          id: uid(),
+          scheduleId,
+          time: sc.time,
+          subjectId: sc.subjectId,
+          room: sc.room,
+          status: newStatus,
+          note: ''
+        });
+      }
+    }
+    saveBucket('actuals');
+    renderToday();
+    renderWeek();
+  }
+
+  // Remove a per-day override, reverting the scheduled class to "pending".
+  function resetActual(dateStr, scheduleId) {
+    if (!state.actuals[dateStr]) return;
+    state.actuals[dateStr] = state.actuals[dateStr].filter(x => x.scheduleId !== scheduleId);
+    if (state.actuals[dateStr].length === 0) delete state.actuals[dateStr];
+    saveBucket('actuals');
+    renderToday();
+    renderWeek();
+  }
+
+  // Delete an extra (ad-hoc) class entirely.
+  function deleteExtraClass(dateStr, actualId) {
+    if (!state.actuals[dateStr]) return;
+    if (!confirm('Delete this extra class?')) return;
+    state.actuals[dateStr] = state.actuals[dateStr].filter(x => x.id !== actualId);
+    if (state.actuals[dateStr].length === 0) delete state.actuals[dateStr];
+    saveBucket('actuals');
+    renderToday();
+    renderWeek();
+  }
+
+  // ===== ACTUAL CLASS MODAL =====
+  function openActualModal(dateStr, scheduleId, actualId) {
+    if (state.subjects.length === 0) { showToast('Add a subject first'); return; }
+    $('actualModalDate').value = dateStr;
+    $('actualModalScheduleId').value = scheduleId || '';
+    $('actualModalActualId').value = actualId || '';
+
+    // Defaults
+    let time = '', subjectId = '', room = '', status = 'held', note = '';
+    let title = 'Add unscheduled class';
+    let showReset = false;
+
+    if (actualId) {
+      const a = (state.actuals[dateStr] || []).find(x => x.id === actualId);
+      if (a) {
+        time = a.time || '';
+        subjectId = a.subjectId || '';
+        room = a.room || '';
+        status = a.status || (a.scheduleId ? 'held' : 'extra');
+        note = a.note || '';
+        title = a.scheduleId ? 'Edit class' : 'Edit extra class';
+        showReset = !!a.scheduleId;
+      }
+    } else if (scheduleId) {
+      // Editing a scheduled class for the first time — prefill from the schedule
+      const dow = dayOfWeek(new Date(dateStr + 'T00:00:00'));
+      const sc = (state.schedule[dow] || []).find(c => c.id === scheduleId);
+      if (sc) {
+        time = sc.time;
+        subjectId = sc.subjectId;
+        room = sc.room || '';
+      }
+      title = 'Edit class';
+    }
+
+    $('actualModalTitle').textContent = title;
+    $('actualModalTime').value = time;
+    $('actualModalSubject').value = subjectId;
+    $('actualModalRoom').value = room;
+    $('actualModalNote').value = note;
+
+    // Status dropdown: 'extra' only available when there's no scheduleId
+    const statusEl = $('actualModalStatus');
+    if (scheduleId) {
+      statusEl.innerHTML =
+        '<option value="held">Held</option>' +
+        '<option value="cancelled">Cancelled</option>';
+      statusEl.value = status === 'cancelled' ? 'cancelled' : 'held';
+    } else {
+      statusEl.innerHTML =
+        '<option value="extra">Held (extra)</option>' +
+        '<option value="cancelled">Cancelled</option>';
+      statusEl.value = status === 'cancelled' ? 'cancelled' : 'extra';
+    }
+
+    $('actualModalResetBtn').style.display = showReset ? '' : 'none';
+    $('actualModalBg').classList.add('show');
+  }
+  function closeActualModal() { $('actualModalBg').classList.remove('show'); }
+
+  function saveActualFromModal() {
+    const dateStr = $('actualModalDate').value;
+    const scheduleId = $('actualModalScheduleId').value;
+    const actualId = $('actualModalActualId').value;
+    const time = $('actualModalTime').value;
+    const subjectId = $('actualModalSubject').value;
+    const room = $('actualModalRoom').value.trim();
+    const status = $('actualModalStatus').value;
+    const note = $('actualModalNote').value.trim();
+
+    if (!subjectId) { showToast('Pick a subject'); return; }
+    if (!time) { showToast('Pick a time'); return; }
+
+    if (!state.actuals[dateStr]) state.actuals[dateStr] = [];
+    const list = state.actuals[dateStr];
+
+    if (actualId) {
+      const a = list.find(x => x.id === actualId);
+      if (a) {
+        a.time = time; a.subjectId = subjectId; a.room = room;
+        a.status = status; a.note = note;
+      }
+    } else if (scheduleId) {
+      // Override existing scheduled class
+      let a = list.find(x => x.scheduleId === scheduleId);
+      if (a) {
+        a.time = time; a.subjectId = subjectId; a.room = room;
+        a.status = status; a.note = note;
+      } else {
+        list.push({ id: uid(), scheduleId, time, subjectId, room, status, note });
+      }
+    } else {
+      // Fresh ad-hoc extra class
+      list.push({ id: uid(), time, subjectId, room, status, note });
+    }
+
+    saveBucket('actuals');
+    closeActualModal();
+    renderToday();
+    renderWeek();
+    showToast('Saved');
+  }
+
+  function resetActualFromModal() {
+    const dateStr = $('actualModalDate').value;
+    const scheduleId = $('actualModalScheduleId').value;
+    if (!scheduleId) { closeActualModal(); return; }
+    resetActual(dateStr, scheduleId);
+    closeActualModal();
+  }
+
   function renderSchedule() {
     const g = $('scheduleGrid');
     g.innerHTML = DAY_ORDER.map(day => `
@@ -1605,6 +2573,7 @@ Tue 8:30 Science (Rm 7)
       const subj = getSubject(h.subjectId);
       const pClass = `priority-${h.priority || 'med'}`;
       const pLabel = h.priority === 'high' ? 'High' : h.priority === 'low' ? 'Low' : 'Medium';
+      const aiBusy = (_aiBreakdowns[h.id] && _aiBreakdowns[h.id].loading) ? 'disabled' : '';
       return `
         <div class="hw-item ${h.completed ? 'done' : ''}" style="border-left-color:${subj ? subj.color : 'var(--ink-soft)'}">
           <div class="hw-check ${h.completed ? 'checked' : ''}" onclick="toggleHw('${h.id}')"></div>
@@ -1616,8 +2585,10 @@ Tue 8:30 Science (Rm 7)
               <span class="priority-tag ${pClass}">${pLabel}</span>
             </div>
             ${h.description ? `<div class="hw-desc">${escapeHtml(h.description)}</div>` : ''}
+            ${aiBreakdownPanelHtml(h.id)}
           </div>
           <div class="hw-actions">
+            <button class="ai-btn" ${aiBusy} onclick="aiBreakdownHw('${h.id}')" title="Break this down with Gemma">✨ Break down</button>
             <button class="btn ghost" onclick="openHwModal('${h.id}')">Edit</button>
             <button class="btn ghost" onclick="deleteHw('${h.id}')">Del</button>
           </div>
@@ -1840,7 +2811,9 @@ Tue 8:30 Science (Rm 7)
 
     // Day-of-week from selected date
     const dow = dayOfWeek(selected);
-    const dayClasses = state.schedule[dow] || [];
+    const mergedClasses = getMergedDayClasses(selectedStr, dow);
+    // Count classes that actually happened (or are still pending) — cancelled ones don't count
+    const happenedCount = mergedClasses.filter(m => m.status !== 'cancelled').length;
 
     // Next day
     const nextDay = new Date(selected); nextDay.setDate(selected.getDate() + 1);
@@ -1860,24 +2833,74 @@ Tue 8:30 Science (Rm 7)
     $('statHwTomorrowLabel').textContent = isToday ? 'Due tomorrow' : 'Due next day';
     $('todayClassesHeading').textContent = isToday ? "Today's Classes" : `Classes on ${selected.toLocaleDateString(undefined, { weekday: 'long' })}`;
 
-    $('statClasses').textContent = dayClasses.length;
+    $('statClasses').textContent = happenedCount;
     $('statHwToday').textContent = hwSelectedOpen.length;
     $('statHwTomorrow').textContent = hwNextOpen.length;
     $('statHwOpen').textContent = hwOpen.length;
 
-    // Classes for selected day
+    // Classes for selected day — schedule merged with actuals.
+    // Each row shows status + quick action buttons (Held / Cancel / Edit / Reset / Delete).
     const tcEl = $('todayClasses');
-    if (dayClasses.length === 0) {
+    const STATUS_LABEL = { pending: 'Scheduled', held: 'Held', cancelled: 'Cancelled', extra: 'Extra' };
+    function classRowHtml(m) {
+      const subjId = m.subjectId;
+      const sched = m.schedClass;
+      const a = m.actual;
+      const cancelled = m.status === 'cancelled';
+      const held = m.status === 'held';
+      const extra = m.status === 'extra' || (m.kind === 'extra' && !cancelled);
+      const cssStatus = cancelled ? 'cancelled' : held ? 'held' : extra ? 'extra' : '';
+      const badgeKey = m.status in STATUS_LABEL ? m.status : 'pending';
+      // For action buttons:
+      const dStr = selectedStr;
+      const schedId = sched ? sched.id : '';
+      const actualId = a ? a.id : '';
+
+      // Build buttons
+      const actions = [];
+      if (m.kind !== 'extra') {
+        // Scheduled (overridable) class
+        if (m.status !== 'held') {
+          actions.push(`<button class="btn ghost" onclick="setClassStatus('${dStr}','${schedId}','${actualId}','held')">✓ Held</button>`);
+        }
+        if (m.status !== 'cancelled') {
+          actions.push(`<button class="btn ghost" onclick="setClassStatus('${dStr}','${schedId}','${actualId}','cancelled')">✗ Cancel</button>`);
+        }
+        actions.push(`<button class="btn ghost" onclick="openActualModal('${dStr}','${schedId}','${actualId}')">Edit</button>`);
+        if (a) {
+          actions.push(`<button class="btn ghost" onclick="resetActual('${dStr}','${schedId}')">Reset</button>`);
+        }
+      } else {
+        // Extra (ad-hoc) class
+        if (m.status === 'cancelled') {
+          actions.push(`<button class="btn ghost" onclick="setClassStatus('${dStr}','','${actualId}','extra')">✓ Held</button>`);
+        } else {
+          actions.push(`<button class="btn ghost" onclick="setClassStatus('${dStr}','','${actualId}','cancelled')">✗ Cancel</button>`);
+        }
+        actions.push(`<button class="btn ghost" onclick="openActualModal('${dStr}','','${actualId}')">Edit</button>`);
+        actions.push(`<button class="btn ghost" onclick="deleteExtraClass('${dStr}','${actualId}')">Del</button>`);
+      }
+
+      const noteHtml = (a && a.note) ? `<div class="class-note">${escapeHtml(a.note)}</div>` : '';
+
+      return `
+        <div class="class-item ${cssStatus}" style="border-left-color:${subjectColor(subjId)};margin-bottom:8px">
+          <div class="time">${fmtTime(m.time)}<span class="status-badge status-${badgeKey}">${STATUS_LABEL[badgeKey]}</span></div>
+          <div class="name">${escapeHtml(subjectName(subjId))}</div>
+          ${m.room ? `<div class="room">${escapeHtml(m.room)}</div>` : ''}
+          ${noteHtml}
+          <div class="class-actions">${actions.join('')}</div>
+        </div>
+      `;
+    }
+
+    if (mergedClasses.length === 0) {
       tcEl.innerHTML = `<div class="empty">No classes scheduled${isToday ? ' today' : ' that day'}.</div>`;
     } else {
-      tcEl.innerHTML = dayClasses.map(c => `
-        <div class="class-item" style="border-left-color:${subjectColor(c.subjectId)};margin-bottom:8px">
-          <div class="time">${fmtTime(c.time)}</div>
-          <div class="name">${subjectName(c.subjectId)}</div>
-          ${c.room ? `<div class="room">${c.room}</div>` : ''}
-        </div>
-      `).join('');
+      tcEl.innerHTML = mergedClasses.map(classRowHtml).join('');
     }
+    // Always offer the "+ add unscheduled class" affordance
+    tcEl.innerHTML += `<button class="btn small accent" style="margin-top:6px" onclick="openActualModal('${selectedStr}','','')">+ Add unscheduled class</button>`;
 
     // Homework — show all (including completed); stats above use open-only counts
     const upcoming = [...hwSelectedAll, ...hwNextAll];
@@ -1973,7 +2996,7 @@ Tue 8:30 Science (Rm 7)
       const d = new Date(monday);
       d.setDate(monday.getDate() + i);
       const dStr = dateKey(d);
-      const classes = state.schedule[day] || [];
+      const merged = getMergedDayClasses(dStr, day);
       const hw = state.homework.filter(h => h.dueDate === dStr);
       const revs = state.reviews[dStr] || [];
 
@@ -1986,13 +3009,21 @@ Tue 8:30 Science (Rm 7)
           <div class="week-day-content">
             <div>
               <div class="sub-head">Classes</div>
-              ${classes.length === 0
+              ${merged.length === 0
                 ? '<div class="empty" style="padding:8px;text-align:left">No classes</div>'
-                : `<ul class="mini-list">${classes.map(c => `
-                  <li><span class="swatch" style="background:${subjectColor(c.subjectId)}"></span>
-                    <strong>${fmtTime(c.time)}</strong> · ${subjectName(c.subjectId)}
-                    ${c.room ? `<span style="color:var(--ink-faint);font-style:italic"> · ${c.room}</span>` : ''}
-                  </li>`).join('')}</ul>`
+                : `<ul class="mini-list">${merged.map(m => {
+                    const cancelled = m.status === 'cancelled';
+                    const held = m.status === 'held';
+                    const extra = m.kind === 'extra' && !cancelled;
+                    const tag = cancelled ? ' <span class="status-badge status-cancelled">Cancelled</span>'
+                              : held ? ' <span class="status-badge status-held">Held</span>'
+                              : extra ? ' <span class="status-badge status-extra">Extra</span>'
+                              : '';
+                    const nameStyle = cancelled ? 'text-decoration:line-through;color:var(--ink-faint)' : '';
+                    return `<li><span class="swatch" style="background:${subjectColor(m.subjectId)}"></span>
+                      <span style="${nameStyle}"><strong>${fmtTime(m.time)}</strong> · ${escapeHtml(subjectName(m.subjectId))}${m.room ? ` <span style="color:var(--ink-faint);font-style:italic"> · ${escapeHtml(m.room)}</span>` : ''}</span>${tag}
+                    </li>`;
+                  }).join('')}</ul>`
               }
             </div>
             <div>
@@ -2102,6 +3133,7 @@ Tue 8:30 Science (Rm 7)
               ? '<div class="empty" style="padding:8px">No topics yet for this month.</div>'
               : topics.map(t => {
                 const subj = getSubject(t.subjectId);
+                const aiBusy = (_aiTopicExplains[t.id] && _aiTopicExplains[t.id].loading) ? 'disabled' : '';
                 return `
                   <div class="topic-row">
                     <div class="topic-subj">
@@ -2109,8 +3141,10 @@ Tue 8:30 Science (Rm 7)
                       ${subj ? escapeHtml(subj.name) : 'Unknown'}
                     </div>
                     <div class="topic-text">${escapeHtml(t.text)}</div>
+                    <button class="ai-btn" ${aiBusy} onclick="aiExplainTopic('${m.key}','${t.id}')" title="Explain with Gemma">✨ Explain</button>
                     <div class="del" onclick="removeTopic('${m.key}','${t.id}')">×</div>
                   </div>
+                  ${aiTopicPanelHtml(t.id) ? `<div style="padding:0 14px 10px">${aiTopicPanelHtml(t.id)}</div>` : ''}
                 `;
               }).join('')
             }
@@ -2424,6 +3458,28 @@ Tue 8:30 Science (Rm 7)
       });
     }
 
+    // Actuals (per-day class overrides — kept as a sub-list under each date)
+    lines.push('## Actuals');
+    const actualEntries = Object.entries(state.actuals)
+      .filter(([, items]) => items && items.length > 0)
+      .sort(([a], [b]) => a.localeCompare(b));
+    if (actualEntries.length === 0) {
+      lines.push('- *(none)*');
+    } else {
+      actualEntries.forEach(([ds, items]) => {
+        lines.push(`### ${ds} — ${fmtDate(ds)}`);
+        items.forEach(a => {
+          const subj = getSubject(a.subjectId);
+          const room = a.room ? ` (${a.room})` : '';
+          lines.push(`- ${fmtTime(a.time)} — ${mdEsc(subj ? subj.name : 'Unknown')}${room}`);
+          lines.push(`  - status:: ${a.status || 'held'}`);
+          if (a.scheduleId) lines.push(`  - scheduleId:: ${a.scheduleId}`);
+          if (a.note) lines.push(`  - note:: ${mdEsc(a.note)}`);
+        });
+        lines.push('');
+      });
+    }
+
     const blob = new Blob([lines.join('\n')], { type: 'text/markdown;charset=utf-8' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
@@ -2444,6 +3500,7 @@ Tue 8:30 Science (Rm 7)
       homework: [],
       topics:   {},
       reviews:  {},
+      actuals:  {},
       hwFilter: 'all', selectedDate: null, weekOffset: 0
     };
     const subjByName = {}; // lowercase name → id
@@ -2552,6 +3609,39 @@ Tue 8:30 Science (Rm 7)
           }
         }
       }
+
+      else if (section === 'actuals') {
+        if (!subSection) continue;
+        const ds = subSection.split(' — ')[0].trim(); // "2026-05-23"
+        if (!result.actuals[ds]) result.actuals[ds] = [];
+        const propM = trimmed.match(/^-\s+(\w+)::\s*(.*)/);
+        if (propM && currentItem) {
+          // Property line on the current actual item (status, scheduleId, note)
+          const k = propM[1], v = propM[2].trim();
+          if (k === 'status') currentItem.status = v;
+          else if (k === 'scheduleId') currentItem.scheduleId = v;
+          else if (k === 'note') currentItem.note = v;
+        } else {
+          // "- 9:00 AM — SubjectName (Room 12)"
+          const m = trimmed.match(/^-\s+(.+?)\s+—\s+(.+?)(?:\s+\(([^)]+)\))?$/);
+          if (m) {
+            let timeStr = m[1].trim();
+            const t12 = timeStr.match(/^(\d{1,2}):(\d{2})\s*(AM|PM)$/i);
+            if (t12) {
+              let h = parseInt(t12[1]);
+              const min = t12[2], ap = t12[3].toUpperCase();
+              if (ap === 'PM' && h < 12) h += 12;
+              if (ap === 'AM' && h === 12) h = 0;
+              timeStr = `${String(h).padStart(2,'0')}:${min}`;
+            }
+            const subjId = resolveSubjId(m[2].trim());
+            if (subjId) {
+              currentItem = { id: uid(), time: timeStr, subjectId: subjId, room: m[3] || '', status: 'held', note: '' };
+              result.actuals[ds].push(currentItem);
+            }
+          }
+        }
+      }
     }
 
     // Sort schedules
@@ -2605,6 +3695,8 @@ Tue 8:30 Science (Rm 7)
       homework: [],
       topics:   {},
       reviews:  {},
+      actuals:  {},
+      ai:       { ollamaUrl: 'http://localhost:11434', model: 'gemma2:2b', enabled: false },
       hwFilter:     'all',
       selectedDate: null,
       weekOffset:   0
@@ -2626,6 +3718,8 @@ Tue 8:30 Science (Rm 7)
     renderMonthDropdown();
     renderMonthList();
     renderStorageStatus();
+    renderAi();
+    renderReviewDraft();
   }
 
   // ===== INIT =====
