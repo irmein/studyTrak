@@ -48,7 +48,7 @@ No framework, no bundler, no dependencies at runtime.
 - **Setup** — manage subjects, paste-to-parse timetables, view storage bucket status
 - **Export / Import** — full data round-trip as Logseq-compatible Markdown
 
-See [FEATURES.md](FEATURES.md) for a detailed breakdown.
+See [docs/features.md](docs/features.md) for a detailed breakdown. For the AI roadmap, see [docs/ai-feature-plan.md](docs/ai-feature-plan.md); for local Gemma setup, see [docs/ollama-setup.md](docs/ollama-setup.md).
 
 ---
 
