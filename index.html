@@ -1,4 +1,5 @@
 <!-- School Planner -->
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📚</text></svg>">
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700;9..144,800&family=Manrope:wght@300;400;500;600;700;800&display=swap');
 
@@ -3349,8 +3350,8 @@ Tue 8:30 Science (Rm 7)
   // ===== EXPORT / IMPORT =====
 
   function mdEsc(s) {
-    // Escape backslashes only; ` — ` is our separator so we swap it in content
-    return (s || '').replace(/\\/g, '\\\\').replace(/ — /g, ' – ');
+    // Escape backslashes and newlines; ` — ` is our separator so we swap it in content
+    return (s || '').replace(/\\/g, '\\\\').replace(/ — /g, ' – ').replace(/\r?\n/g, '\\n');
   }
 
   function exportToMarkdown() {
@@ -3573,7 +3574,7 @@ Tue 8:30 Science (Rm 7)
           if (k === 'subject') currentItem.subjectId = resolveSubjId(v.trim());
           else if (k === 'due') currentItem.dueDate = v.trim();
           else if (k === 'priority') currentItem.priority = v.trim();
-          else if (k === 'notes') currentItem.description = v.trim();
+          else if (k === 'notes') currentItem.description = v.trim().replace(/\\n/g, '\n');
         } else {
           const m = trimmed.match(/^-\s+\[([ x])\]\s+(.*)/);
           if (m) {
