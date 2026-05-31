@@ -935,6 +935,8 @@
   }
   .ai-chat-msg.ai-error .ai-chat-text { background: #fde8e0; color: var(--accent); }
   .ai-chat-busy .ai-chat-text { font-style: italic; opacity: 0.7; }
+  .ai-cursor { display: inline-block; animation: ai-blink 0.8s step-end infinite; }
+  @keyframes ai-blink { 0%,100% { opacity:1 } 50% { opacity:0 } }
   .ai-chat-foot {
     padding: 10px;
     border-top: 1px solid var(--rule);
@@ -1714,7 +1716,26 @@ Tue 8:30 Science (Rm 7)
 
   function aiCfg() { return Object.assign({}, AI_DEFAULTS, state.ai || {}); }
 
-  async function aiGenerate(systemPrompt, userPrompt) {
+  // Read an Ollama streaming response (NDJSON). Calls onChunk(accumulatedText) per token.
+  async function readOllamaStream(response, onChunk) {
+    const reader = response.body.getReader();
+    const decoder = new TextDecoder();
+    let full = '';
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      for (const line of decoder.decode(value, { stream: true }).split('\n')) {
+        if (!line.trim()) continue;
+        try {
+          const piece = JSON.parse(line).message?.content || '';
+          if (piece) { full += piece; onChunk(full); }
+        } catch (_) {}
+      }
+    }
+    return full;
+  }
+
+  async function aiGenerate(systemPrompt, userPrompt, onChunk) {
     const cfg = aiCfg();
     if (!cfg.enabled) throw new Error('Enable Gemma in Setup first');
     const url = cfg.ollamaUrl.replace(/\/$/, '') + '/api/chat';
@@ -1727,7 +1748,7 @@ Tue 8:30 Science (Rm 7)
           { role: 'system', content: systemPrompt },
           { role: 'user', content: userPrompt }
         ],
-        stream: false
+        stream: true
       })
     });
     if (!r.ok) {
@@ -1735,8 +1756,7 @@ Tue 8:30 Science (Rm 7)
       try { const j = await r.json(); if (j.error) msg += `: ${j.error}`; } catch (_) {}
       throw new Error(msg);
     }
-    const j = await r.json();
-    return (j.message && j.message.content) || '';
+    return readOllamaStream(r, onChunk || (() => {}));
   }
 
   async function aiTestConnection() {
@@ -1790,7 +1810,10 @@ Tue 8:30 Science (Rm 7)
       const grade = state.basics.grade || '6';
       const sys = `You are a friendly study coach for a grade ${grade} student. Break the homework into 3 to 6 short, concrete steps a student can check off. Output ONLY a markdown checklist (one "- [ ] step" per line). No preamble, no closing remarks, no headings.`;
       const usr = `Subject: ${subj ? subj.name : 'general'}\nAssignment: ${h.title}${h.description ? '\nNotes: ' + h.description : ''}${h.dueDate ? '\nDue: ' + h.dueDate : ''}`;
-      const text = await aiGenerate(sys, usr);
+      const text = await aiGenerate(sys, usr, (partial) => {
+        _aiBreakdowns[hwId] = { text: partial, streaming: true };
+        renderHwList();
+      });
       _aiBreakdowns[hwId] = { text: text.trim() };
     } catch (e) {
       _aiBreakdowns[hwId] = { error: e.message };
@@ -1816,6 +1839,10 @@ Tue 8:30 Science (Rm 7)
     if (!b) return '';
     if (b.loading) return `<div class="ai-panel"><div class="ai-panel-h">✨ Gemma is thinking…</div></div>`;
     if (b.error) return `<div class="ai-panel ai-error"><div class="ai-panel-h">✨ Error <button class="btn ghost" onclick="aiBreakdownDismiss('${hwId}')">×</button></div>${escapeHtml(b.error)}</div>`;
+    if (b.streaming) return `<div class="ai-panel">
+      <div class="ai-panel-h">✨ Writing breakdown…</div>
+      <pre>${escapeHtml(b.text)}<span class="ai-cursor">▋</span></pre>
+    </div>`;
     return `<div class="ai-panel">
       <div class="ai-panel-h">✨ Suggested breakdown
         <span>
@@ -1841,7 +1868,10 @@ Tue 8:30 Science (Rm 7)
       const grade = state.basics.grade || '6';
       const sys = `You are a patient teacher explaining concepts to a grade ${grade} student. Give a short, clear, friendly explanation in 3 to 5 sentences. Use simple language and one concrete example. Plain prose — no headings, no bullet points.`;
       const usr = `Subject: ${subj ? subj.name : 'general'}\nTopic: ${t.text}`;
-      const text = await aiGenerate(sys, usr);
+      const text = await aiGenerate(sys, usr, (partial) => {
+        _aiTopicExplains[topicId] = { text: partial, streaming: true };
+        renderMonthList();
+      });
       _aiTopicExplains[topicId] = { text: text.trim() };
     } catch (e) {
       _aiTopicExplains[topicId] = { error: e.message };
@@ -1857,6 +1887,10 @@ Tue 8:30 Science (Rm 7)
     if (!b) return '';
     if (b.loading) return `<div class="ai-panel"><div class="ai-panel-h">✨ Gemma is thinking…</div></div>`;
     if (b.error) return `<div class="ai-panel ai-error"><div class="ai-panel-h">✨ Error <button class="btn ghost" onclick="aiExplainTopicDismiss('${topicId}')">×</button></div>${escapeHtml(b.error)}</div>`;
+    if (b.streaming) return `<div class="ai-panel">
+      <div class="ai-panel-h">✨ Explaining…</div>
+      ${escapeHtml(b.text).replace(/\n/g,'<br>')}<span class="ai-cursor">▋</span>
+    </div>`;
     return `<div class="ai-panel">
       <div class="ai-panel-h">✨ Explanation <button class="btn ghost" onclick="aiExplainTopicDismiss('${topicId}')">×</button></div>
       ${escapeHtml(b.text).replace(/\n/g,'<br>')}
@@ -1995,6 +2029,8 @@ Tue 8:30 Science (Rm 7)
     input.value = '';
     _aiChatHistory.push({ role: 'user', content: text });
     _aiChatBusy = true;
+    const assistantMsg = { role: 'assistant', content: '' };
+    _aiChatHistory.push(assistantMsg);
     renderAiChat();
     try {
       const cfg = aiCfg();
@@ -2004,15 +2040,20 @@ Tue 8:30 Science (Rm 7)
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           model: cfg.model,
-          messages: [ { role: 'system', content: aiChatContext() }, ..._aiChatHistory ],
-          stream: false
+          // exclude the empty assistant placeholder from the context sent to the model
+          messages: [ { role: 'system', content: aiChatContext() }, ..._aiChatHistory.slice(0, -1) ],
+          stream: true
         })
       });
       if (!r.ok) throw new Error(`Ollama returned ${r.status}`);
-      const j = await r.json();
-      _aiChatHistory.push({ role: 'assistant', content: (j.message && j.message.content) || '(no response)' });
+      const full = await readOllamaStream(r, (partial) => {
+        assistantMsg.content = partial;
+        renderAiChat();
+      });
+      if (!full) assistantMsg.content = '(no response)';
     } catch (e) {
-      _aiChatHistory.push({ role: 'assistant', content: e.message, error: true });
+      assistantMsg.content = e.message;
+      assistantMsg.error = true;
     }
     _aiChatBusy = false;
     renderAiChat();
@@ -2024,15 +2065,21 @@ Tue 8:30 Science (Rm 7)
     if (_aiChatHistory.length === 0 && !_aiChatBusy) {
       html = `<div class="ai-chat-empty">Ask Gemma anything about your subjects, homework, or study habits. The assistant knows your current schedule and open work.</div>`;
     } else {
-      html = _aiChatHistory.map(m => `
+      html = _aiChatHistory.map((m, i) => {
+        const isStreaming = _aiChatBusy && i === _aiChatHistory.length - 1 && m.role === 'assistant';
+        const cursor = isStreaming ? '<span class="ai-cursor">▋</span>' : '';
+        return `
         <div class="ai-chat-msg ai-chat-${m.role}${m.error ? ' ai-error' : ''}">
           <div class="ai-chat-role">${m.role === 'user' ? 'You' : 'Gemma'}</div>
-          <div class="ai-chat-text">${escapeHtml(m.content).replace(/\n/g,'<br>')}</div>
-        </div>
-      `).join('');
+          <div class="ai-chat-text">${escapeHtml(m.content).replace(/\n/g,'<br>')}${cursor}</div>
+        </div>`;
+      }).join('');
     }
     if (_aiChatBusy) {
-      html += `<div class="ai-chat-msg ai-chat-assistant ai-chat-busy"><div class="ai-chat-role">Gemma</div><div class="ai-chat-text">…thinking</div></div>`;
+      const last = _aiChatHistory[_aiChatHistory.length - 1];
+      if (!last || last.role !== 'assistant' || !last.content) {
+        html += `<div class="ai-chat-msg ai-chat-assistant ai-chat-busy"><div class="ai-chat-role">Gemma</div><div class="ai-chat-text">…thinking</div></div>`;
+      }
     }
     body.innerHTML = html;
     body.scrollTop = body.scrollHeight;
