@@ -3620,7 +3620,15 @@ Tue 8:30 Science (Rm 7)
           // Property line on the current actual item (status, scheduleId, note)
           const k = propM[1], v = propM[2].trim();
           if (k === 'status') currentItem.status = v;
-          else if (k === 'scheduleId') currentItem.scheduleId = v;
+          else if (k === 'scheduleId') {
+            // The stored ID points to the old schedule entry; remap to the newly-generated ID
+            // by matching on day-of-week (derived from the actual's date), time, and subject.
+            const dow = dayOfWeek(new Date(ds + 'T00:00:00'));
+            const match = (result.schedule[dow] || []).find(
+              s => s.time === currentItem.time && s.subjectId === currentItem.subjectId
+            );
+            currentItem.scheduleId = match ? match.id : '';
+          }
           else if (k === 'note') currentItem.note = v;
         } else {
           // "- 9:00 AM — SubjectName (Room 12)"
